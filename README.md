@@ -34,27 +34,126 @@ project/
 │   │   ├── Classe.cpp
 │   │   ├── Matiere.cpp
 │   │   ├── Note.cpp
+│   │   ├── Absence.cpp
+│   │   ├── Retard.cpp
+│   │   ├── Communication.cpp
 │   │   └── Pointage.cpp
 │   ├── dao/             # Couche d'accès aux données
 │   │   ├── UtilisateurDAO.cpp
 │   │   ├── ClasseDAO.cpp
 │   │   ├── MatiereDAO.cpp
 │   │   ├── NoteDAO.cpp
+│   │   ├── AbsenceDAO.cpp
+│   │   ├── RetardDAO.cpp
+│   │   ├── CommunicationDAO.cpp
 │   │   └── PointageDAO.cpp
-│   └── databaseConnection.cpp
+│   ├── services/        # Logique métier
+│   │   ├── UserService.cpp
+│   │   ├── ClassService.cpp
+│   │   └── NotificationService.cpp
+│   └── database/        # Gestion de la base de données
+│       └── databaseConnection.cpp
 ├── include/
 │   ├── models/          # Headers des classes métier
 │   ├── dao/             # Headers DAO
-│   └── databaseConnection.hpp
-└── docs/
+│   ├── services/        # Headers des services
+│   └── database/        # Headers de la base de données
+│       └── databaseConnection.hpp
+└── docs/                # Documentation
 
 ```
+
+**Explication :** 
+
+- **src/** : Contient le code source principal de l'application.
+  - **models/** : Contient les classes représentant les entités du système.
+  - **dao/** : Contient les classes responsables de l'accès aux données.
+  - **services/** : Contient la logique métier, séparant les opérations complexes des DAO.
+  - **database/** : Contient la gestion de la connexion à la base de données.
+
+- **include/** : Contient les fichiers d'en-tête pour les différentes parties du code, organisés de manière similaire à `src/`.
+
+- **docs/** : Contient la documentation du projet.
+
+Cette structure est conçue pour séparer clairement les différentes responsabilités du code, facilitant ainsi la maintenance et l'évolution du projet. Si vous avez d'autres ajustements ou des questions, n'hésitez pas à me le faire savoir !
+
+Le projet est organisé en plusieurs modules, chacun responsable d'une partie spécifique du système. Voici un aperçu des principaux composants :
+
+### 1. Modèles
+
+Les modèles représentent les entités principales du système. Chaque modèle est défini par une classe C++ avec des attributs et des méthodes spécifiques.
+
+- **Utilisateur** : Représente un utilisateur du système avec des attributs comme `nom`, `prenom`, `login`, `type`, etc. Les méthodes incluent des getters et setters, ainsi que des méthodes de validation.
+
+  **Commentaire :** La classe `Utilisateur` est essentielle car elle gère les informations de base de chaque utilisateur du système. Les méthodes de validation assurent que les données utilisateur sont correctes avant d'être enregistrées.
+
+- **Classe** : Représente une classe scolaire avec des attributs comme `nom`, `niveau`, `anneeScolaire`, etc. Les méthodes permettent de gérer les élèves inscrits et de vérifier la capacité de la classe.
+
+  **Commentaire :** La gestion des classes est cruciale pour organiser les élèves et les cours. Les méthodes associées aident à maintenir l'intégrité des données concernant les inscriptions.
+
+- **Matiere** : Représente une matière enseignée avec des attributs comme `nom`, `description`, `coefficient`, etc. Les méthodes incluent des getters, setters, et une méthode de validation.
+
+  **Commentaire :** La classe `Matiere` permet de gérer les informations sur les matières enseignées, ce qui est fondamental pour le suivi académique.
+
+- **Absence** : Représente une absence d'un élève avec des attributs comme `eleveId`, `dateDebut`, `dateFin`, etc. Les méthodes permettent de vérifier la validité de l'absence.
+
+  **Commentaire :** La gestion des absences est importante pour le suivi de la présence des élèves et pour la communication avec les parents.
+
+- **Retard** : Représente un retard d'un élève avec des attributs comme `eleveId`, `dateRetard`, `heureArrivee`, etc. Les méthodes incluent la validation du retard.
+
+  **Commentaire :** Le suivi des retards aide à identifier les problèmes de ponctualité et à prendre des mesures correctives.
+
+- **Communication** : Représente une communication entre utilisateurs avec des attributs comme `type`, `titre`, `contenu`, etc. Les méthodes permettent de gérer les destinataires et de valider la communication.
+
+  **Commentaire :** La classe `Communication` facilite l'échange d'informations entre les utilisateurs, ce qui est essentiel pour la coordination et la gestion des événements scolaires.
+
+### 2. DAO (Data Access Object)
+
+Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO fournit des méthodes pour effectuer des opérations CRUD (Create, Read, Update, Delete) sur les entités correspondantes.
+
+- **UtilisateurDAO** : Gère les opérations de base de données pour les utilisateurs, comme l'ajout, la modification, la suppression, et la recherche par nom.
+
+  **Commentaire :** Le DAO pour les utilisateurs permet de centraliser et d'abstraire l'accès aux données, ce qui simplifie les modifications futures de la base de données.
+
+- **ClasseDAO** : Gère les opérations de base de données pour les classes, y compris l'inscription et la désinscription des élèves.
+
+  **Commentaire :** Ce DAO assure que les opérations sur les classes sont effectuées de manière cohérente et sécurisée.
+
+- **MatiereDAO** : Gère les opérations de base de données pour les matières, y compris l'ajout et la modification des matières.
+
+  **Commentaire :** La gestion des matières via un DAO permet de maintenir une base de données propre et bien structurée.
+
+- **AbsenceDAO** : Gère les opérations de base de données pour les absences, y compris l'ajout et la justification des absences.
+
+  **Commentaire :** Ce DAO est crucial pour le suivi des absences et pour générer des rapports précis.
+
+- **RetardDAO** : Gère les opérations de base de données pour les retards, y compris l'ajout et la justification des retards.
+
+  **Commentaire :** La gestion des retards via un DAO permet de suivre efficacement les problèmes de ponctualité.
+
+- **CommunicationDAO** : Gère les opérations de base de données pour les communications, y compris l'ajout et la gestion des destinataires.
+
+  **Commentaire :** Ce DAO facilite la gestion des communications internes, ce qui est essentiel pour une bonne coordination.
+
+### 3. Main
+
+Le fichier `main.cpp` contient le point d'entrée du programme. Il gère l'affichage des menus et la navigation entre les différentes fonctionnalités du système.
+
+**Commentaire :** Le fichier `main.cpp` est le cœur de l'application, orchestrant les interactions entre les différentes parties du système.
 
 ### Patterns de conception utilisés
 
 1. **Singleton** : Pour la connexion à la base de données
+
+   **Commentaire :** Le pattern Singleton garantit qu'il n'y a qu'une seule instance de connexion à la base de données, ce qui évite les conflits et optimise les ressources.
+
 2. **DAO (Data Access Object)** : Pour l'abstraction de la couche données
+
+   **Commentaire :** Le pattern DAO permet de séparer la logique de l'application de l'accès aux données, facilitant ainsi la maintenance et l'évolution du code.
+
 3. **MVC** : Séparation des responsabilités
+
+   **Commentaire :** Le pattern MVC (Modèle-Vue-Contrôleur) est utilisé pour structurer l'application de manière à séparer les données, la logique de l'application et l'interface utilisateur, ce qui améliore la modularité et la testabilité du code.
 
 ## Base de données
 
@@ -86,23 +185,170 @@ CREATE TABLE utilisateurs (
 ```sql
 CREATE TABLE classes (
     id_classe INT PRIMARY KEY AUTO_INCREMENT,
-    nom VARCHAR(50) NOT NULL,
+    nom_classe VARCHAR(50) NOT NULL,
     niveau VARCHAR(20) NOT NULL,
     annee_scolaire VARCHAR(9) NOT NULL,
-    professeur_principal_id INT,
-    capacite_max INT DEFAULT 35
+    professeur_principal INT,
+    FOREIGN KEY (professeur_principal) REFERENCES utilisateurs(id_utilisateur)
+);
+
+```
+
+### Table `matieres`
+
+```sql
+CREATE TABLE matieres (
+    id_matiere INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL,
+    description TEXT,
+    coefficient INT DEFAULT 1,
+    volume_horaire INT DEFAULT 0
+);
+
+```
+
+### Table `enseignements`
+
+```sql
+CREATE TABLE enseignements (
+    id_enseignement INT PRIMARY KEY AUTO_INCREMENT,
+    id_professeur INT,
+    id_matiere INT,
+    id_classe INT,
+    FOREIGN KEY (id_professeur) REFERENCES utilisateurs(id_utilisateur),
+    FOREIGN KEY (id_matiere) REFERENCES matieres(id_matiere),
+    FOREIGN KEY (id_classe) REFERENCES classes(id_classe)
+);
+
+```
+
+### Table `inscriptions`
+
+```sql
+CREATE TABLE inscriptions (
+    id_inscription INT PRIMARY KEY AUTO_INCREMENT,
+    id_eleve INT,
+    id_classe INT,
+    date_inscription DATE DEFAULT '2024-12-01',
+    statut ENUM('actif', 'inactif') DEFAULT 'actif',
+    FOREIGN KEY (id_eleve) REFERENCES utilisateurs(id_utilisateur),
+    FOREIGN KEY (id_classe) REFERENCES classes(id_classe)
+);
+
+```
+
+### Table `notes`
+
+```sql
+CREATE TABLE notes (
+    id_note INT PRIMARY KEY AUTO_INCREMENT,
+    id_eleve INT,
+    id_matiere INT,
+    id_professeur INT,
+    note DECIMAL(4,2),
+    coefficient INT DEFAULT 1,
+    type_evaluation VARCHAR(50),
+    date_evaluation DATE,
+    commentaire TEXT,
+    FOREIGN KEY (id_eleve) REFERENCES utilisateurs(id_utilisateur),
+    FOREIGN KEY (id_matiere) REFERENCES matieres(id_matiere),
+    FOREIGN KEY (id_professeur) REFERENCES utilisateurs(id_utilisateur)
+);
+
+```
+
+### Table `absences`
+
+```sql
+CREATE TABLE absences (
+    id_absence INT PRIMARY KEY AUTO_INCREMENT,
+    id_eleve INT,
+    date_debut DATETIME,
+    date_fin DATETIME,
+    justifie BOOLEAN DEFAULT FALSE,
+    motif TEXT,
+    FOREIGN KEY (id_eleve) REFERENCES utilisateurs(id_utilisateur)
+);
+
+```
+
+### Table `pointage`
+
+```sql
+CREATE TABLE pointage (
+    id_pointage INT PRIMARY KEY AUTO_INCREMENT,
+    id_eleve INT,
+    date_pointage DATE NOT NULL,
+    heure_arrivee TIME,
+    heure_depart TIME,
+    statut VARCHAR(20) DEFAULT 'présent',
+    commentaire TEXT,
+    validateur_id INT,
+    FOREIGN KEY (id_eleve) REFERENCES utilisateurs(id_utilisateur),
+    FOREIGN KEY (validateur_id) REFERENCES utilisateurs(id_utilisateur)
+);
+
+```
+
+### Table `retenues`
+
+```sql
+CREATE TABLE retenues (
+    id_retenue INT PRIMARY KEY AUTO_INCREMENT,
+    id_eleve INT,
+    date_retenue DATE NOT NULL,
+    heure_debut TIME NOT NULL,
+    heure_fin TIME NOT NULL,
+    motif TEXT,
+    id_professeur INT,
+    statut ENUM('programmée', 'effectuée', 'annulée') DEFAULT 'programmée',
+    commentaire TEXT,
+    FOREIGN KEY (id_eleve) REFERENCES utilisateurs(id_utilisateur),
+    FOREIGN KEY (id_professeur) REFERENCES utilisateurs(id_utilisateur)
+);
+
+```
+
+### Table `reunions`
+
+```sql
+CREATE TABLE reunions (
+    id_reunion INT PRIMARY KEY AUTO_INCREMENT,
+    titre VARCHAR(255) NOT NULL,
+    date_reunion DATE NOT NULL,
+    heure_debut TIME NOT NULL,
+    heure_fin TIME NOT NULL,
+    type_reunion ENUM('parents-professeurs', 'conseil_classe', 'administrative') NOT NULL,
+    salle VARCHAR(50),
+    description TEXT,
+    organisateur_id INT,
+    FOREIGN KEY (organisateur_id) REFERENCES utilisateurs(id_utilisateur)
 );
 
 ```
 
 ## Conception Orientée Objet
 
+### Définitions et Notions de Base
+
+La programmation orientée objet (POO) est un paradigme de programmation qui utilise des "objets" pour représenter des données et des méthodes. Les objets sont des instances de classes, qui définissent des attributs (données) et des méthodes (fonctions) pour manipuler ces données.
+
+#### Principes Fondamentaux
+
+1. **Encapsulation** : Regrouper les données et les méthodes qui les manipulent dans une seule unité, la classe. Cela permet de cacher les détails internes et de protéger l'intégrité des données.
+
+2. **Héritage** : Permettre à une classe de dériver d'une autre classe, héritant ainsi de ses attributs et méthodes. Cela favorise la réutilisation du code.
+
+3. **Polymorphisme** : Permettre à des objets de différents types d'être traités comme des objets du même type, grâce à des interfaces communes.
+
+4. **Abstraction** : Fournir une interface simplifiée pour interagir avec des objets complexes, en cachant les détails d'implémentation.
+
 ### Principes SOLID appliqués
 
-1. **Single Responsibility**
+1. **Single Responsibility** : Chaque classe doit avoir une seule responsabilité ou raison de changer.
 
 ```cpp
-// Chaque classe a une responsabilité unique
+// Exemple de classes avec responsabilité unique
 class Utilisateur {
     // Gère uniquement les informations utilisateur
 };
@@ -110,43 +356,38 @@ class Utilisateur {
 class UtilisateurDAO {
     // Gère uniquement l'accès aux données utilisateur
 };
-
 ```
 
-1. **Open/Closed**
+2. **Open/Closed** : Les classes doivent être ouvertes à l'extension mais fermées à la modification.
 
 ```cpp
-// Les classes sont ouvertes à l'extension mais fermées à la modification
+// Exemple de classes ouvertes à l'extension
 class Note {
-    virtual bool estValide() const;
+    virtual bool estValide() const {
+        // Implémentation de la validation de la note
+    }
 };
 ```
 
-### Hiérarchie des classes
+### Hiérarchie des Classes
+
+#### Diagramme de Classes
 
 ```mermaid
 classDiagram
-    %% Classes de base
     class Utilisateur {
         -int id
         -string nom
         -string prenom
         -string login
         -string type
-        -string dateCreation
-        -bool actif
         +verifierDroits(string action) bool
         +estValide() bool
-        +getNomComplet() string
-        +getters/setters()
     }
 
     class Eleve {
         -int idEleve
         -int classeId
-        -int parentId
-        -string dateNaissance
-        -string dateInscription
         +getters/setters()
     }
 
@@ -154,54 +395,18 @@ classDiagram
         -int id
         -string nom
         -string niveau
-        -string anneeScolaire
-        -int professeurPrincipalId
-        -int capaciteMax
-        -string sallePrincipale
-        -vector<int> elevesIds
         +ajouterEleve(int eleveId) bool
-        +retirerEleve(int eleveId) bool
-        +estPleine() bool
-        +getNombreEleves() int
-        +estValide() bool
-        +toString() string
-    }
-
-    class Matiere {
-        -int id
-        -string nom
-        -string description
-        -int coefficient
-        -int volumeHoraire
-        +estValide() bool
-        +toString() string
-    }
-
-    class Note {
-        -int id
-        -int eleveId
-        -int matiereId
-        -int professeurId
-        -double valeur
-        -int coefficient
-        -string typeEvaluation
-        -string dateEvaluation
-        -string commentaire
         +estValide() bool
     }
 
-    %% Relations
     Utilisateur <|-- Eleve
     Classe "1" --> "*" Eleve
-    Matiere "*" --> "*" Utilisateur
-    Note "*" --> "1" Eleve
-    Note "*" --> "1" Matiere
-
 ```
+
+#### Gestion de la Présence et Discipline
 
 ```mermaid
 classDiagram
-    %% Classes de gestion de présence et discipline
     class Pointage {
         -int id
         -int eleveId
@@ -265,55 +470,12 @@ classDiagram
         +estValide() bool
     }
 
-    %% Relations
     Pointage "*" --> "1" Eleve
     Absence "*" --> "1" Eleve
     Retard "*" --> "1" Eleve
     Retenue "*" --> "1" Eleve
     Communication "*" --> "1" Utilisateur : expediteur
     Communication "*" --> "*" Utilisateur : destinataires
-```
-
-```mermaid
-classDiagram
-    %% Classes DAO
-    class DatabaseConnection {
-        -MYSQL* connection
-        -static DatabaseConnection* instance
-        +static getInstance() DatabaseConnection*
-        +executeQuery(string) bool
-        +getResult() MYSQL_RES*
-        +getLastError() string
-    }
-
-    class GenericDAO {
-        #DatabaseConnection* db
-        +ajouter(T object) bool
-        +modifier(T object) bool
-        +supprimer(int id) bool
-        +getById(int id) T*
-        +getAll() vector<T>
-    }
-
-    class UtilisateurDAO {
-        +rechercherParType(string) vector<Utilisateur>
-        +rechercherParNom(string) vector<Utilisateur>
-        +activerUtilisateur(int) bool
-        +desactiverUtilisateur(int) bool
-        +compterParType(string) int
-    }
-
-    class ClasseDAO {
-        +inscrireEleve(int, int) bool
-        +desinscrireEleve(int, int) bool
-        +getElevesClasse(int) vector<Utilisateur>
-        +verifierCapacite(int) bool
-    }
-
-    %% Relations
-    GenericDAO --> DatabaseConnection
-    UtilisateurDAO --|> GenericDAO
-    ClasseDAO --|> GenericDAO
 ```
 
 ## Implémentation
