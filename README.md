@@ -370,7 +370,7 @@ class Note {
 
 ### Hiérarchie des Classes
 
-#### Diagramme de Classes - Utilisateur et Eleve
+#### Diagramme de Classes - Utilisateur et Types d'Utilisateurs
 
 ```mermaid
 classDiagram
@@ -388,9 +388,25 @@ classDiagram
         -int idEleve
         -int classeId
         +getters/setters()
+        +inscrireClasse(int classeId) bool
+    }
+
+    class Professeur {
+        -int idProfesseur
+        -list<int> matieres
+        +getters/setters()
+        +ajouterMatiere(int matiereId) bool
+    }
+
+    class Admin {
+        -int idAdmin
+        +gererUtilisateurs() void
+        +gererSysteme() void
     }
 
     Utilisateur <|-- Eleve
+    Utilisateur <|-- Professeur
+    Utilisateur <|-- Admin
 ```
 
 #### Diagramme de Classes - Classe et Eleve
@@ -409,6 +425,7 @@ classDiagram
         -int idEleve
         -int classeId
         +getters/setters()
+        +inscrireClasse(int classeId) bool
     }
 
     Classe "1" --> "*" Eleve
