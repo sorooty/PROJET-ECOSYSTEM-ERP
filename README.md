@@ -370,7 +370,7 @@ class Note {
 
 ### Hiérarchie des Classes
 
-#### Diagramme de Classes
+#### Diagramme de Classes - Utilisateur et Eleve
 
 ```mermaid
 classDiagram
@@ -390,6 +390,13 @@ classDiagram
         +getters/setters()
     }
 
+    Utilisateur <|-- Eleve
+```
+
+#### Diagramme de Classes - Classe et Eleve
+
+```mermaid
+classDiagram
     class Classe {
         -int id
         -string nom
@@ -398,11 +405,16 @@ classDiagram
         +estValide() bool
     }
 
-    Utilisateur <|-- Eleve
+    class Eleve {
+        -int idEleve
+        -int classeId
+        +getters/setters()
+    }
+
     Classe "1" --> "*" Eleve
 ```
 
-#### Gestion de la Présence et Discipline
+#### Gestion de la Présence et Discipline - Pointage, Absence, Retard, Retenue
 
 ```mermaid
 classDiagram
@@ -454,6 +466,16 @@ classDiagram
         +estValide() bool
     }
 
+    Pointage "*" --> "1" Eleve
+    Absence "*" --> "1" Eleve
+    Retard "*" --> "1" Eleve
+    Retenue "*" --> "1" Eleve
+```
+
+#### Diagramme de Classes - Communication
+
+```mermaid
+classDiagram
     class Communication {
         -int id
         -string typeCommunication
@@ -469,10 +491,6 @@ classDiagram
         +estValide() bool
     }
 
-    Pointage "*" --> "1" Eleve
-    Absence "*" --> "1" Eleve
-    Retard "*" --> "1" Eleve
-    Retenue "*" --> "1" Eleve
     Communication "*" --> "1" Utilisateur : expediteur
     Communication "*" --> "*" Utilisateur : destinataires
 ```

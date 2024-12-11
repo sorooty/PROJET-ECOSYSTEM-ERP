@@ -294,3 +294,172 @@
 	<string>
 	<vector>
 
+1733413141 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\absencedao.cpp
+	"../../include/dao/AbsenceDAO.hpp"
+	<sstream>
+
+1733413041 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\absencedao.hpp
+	"../models/Absence.hpp"
+	"../DatabaseConnection.hpp"
+	<vector>
+
+1733413044 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\absence.hpp
+	<string>
+
+1733078578 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\databaseconnection.hpp
+	<mysql.h>
+	<iostream>
+	<string>
+
+1733212526 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\classedao.cpp
+	"../../include/dao/ClasseDAO.hpp"
+	<sstream>
+
+1733099078 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\classedao.hpp
+	<vector>
+	<string>
+	"../models/Classe.hpp"
+	"../models/Utilisateur.hpp"
+	"../databaseConnection.hpp"
+
+1733095854 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\classe.hpp
+	<string>
+	<vector>
+	"Utilisateur.hpp"
+
+1733098808 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\utilisateur.hpp
+	<string>
+
+1733567082 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\communicationdao.cpp
+	"../../include/dao/CommunicationDAO.hpp"
+	<sstream>
+
+1733566038 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\communicationdao.hpp
+	"../models/Communication.hpp"
+	"../DatabaseConnection.hpp"
+	<vector>
+
+1733566022 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\communication.hpp
+	<string>
+	<vector>
+
+1733846736 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\enseignementdao.cpp
+	"../../include/dao/EnseignementDAO.hpp"
+	<sstream>
+
+1733572078 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\enseignementdao.hpp
+	"../models/Enseignement.hpp"
+	"../DatabaseConnection.hpp"
+	<vector>
+
+1733592105 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\enseignement.hpp
+	<string>
+
+1733096682 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\matieredao.cpp
+	"../../include/dao/MatiereDAO.hpp"
+	<sstream>
+
+1733096628 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\matieredao.hpp
+	<vector>
+	"../models/Matiere.hpp"
+	"../DatabaseConnection.hpp"
+
+1733096554 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\matiere.hpp
+	<string>
+	<vector>
+
+1733383798 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\notedao.cpp
+	"../../include/dao/NoteDAO.hpp"
+	<sstream>
+
+1733267434 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\notedao.hpp
+	"../models/Note.hpp"
+	"../DatabaseConnection.hpp"
+	<vector>
+
+1733267424 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\note.hpp
+	<string>
+
+1733341562 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\pointagedao.cpp
+	"../../include/dao/PointageDAO.hpp"
+	<sstream>
+
+1733266490 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\pointagedao.hpp
+	"../models/Pointage.hpp"
+	"../DatabaseConnection.hpp"
+	<vector>
+
+1733266575 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\pointage.hpp
+	<string>
+
+1733383799 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\utilisateurdao.cpp
+	"../../include/dao/UtilisateurDAO.hpp"
+	<sstream>
+
+1733098135 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\utilisateurdao.hpp
+	<vector>
+	"../models/Utilisateur.hpp"
+	"../models/Matiere.hpp"
+	"../DatabaseConnection.hpp"
+
+1733383798 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\databaseconnection.cpp
+	"../include/databaseConnection.hpp"
+
+1733596119 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\main.cpp
+	<iostream>
+	<string>
+	<iomanip>
+	<ctime>
+	<sstream>
+	"../include/dao/UtilisateurDAO.hpp"
+	"../include/dao/ClasseDAO.hpp"
+	"../include/dao/MatiereDAO.hpp"
+	"../include/dao/PointageDAO.hpp"
+	"../include/dao/NoteDAO.hpp"
+	"../include/dao/CommunicationDAO.hpp"
+	"../include/dao/EnseignementDAO.hpp"
+
+1733413145 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\absence.cpp
+	"../../include/models/Absence.hpp"
+
+1733095862 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\classe.cpp
+	"../../include/models/Classe.hpp"
+
+1733566058 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\communication.cpp
+	"../../include/models/Communication.hpp"
+
+1733592151 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\enseignement.cpp
+	"../../include/models/Enseignement.hpp"
+	<sstream>
+
+1733096586 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\matiere.cpp
+	"../../include/models/Matiere.hpp"
+
+1733383799 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\note.cpp
+	"../../include/models/Note.hpp"
+
+1733266605 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\pointage.cpp
+	"../../include/models/Pointage.hpp"
+
+1733413156 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\retard.cpp
+	"../../include/models/Retard.hpp"
+
+1733413039 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\retard.hpp
+	<string>
+
+1733412327 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\retenue.cpp
+	"../../include/models/Retenue.hpp"
+
+1733413366 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\retenue.hpp
+	<string>
+
+1733565742 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\reunion.cpp
+	"../../include/models/Reunion.hpp"
+
+1733565509 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\reunion.hpp
+	<string>
+	<vector>
+
+1733098870 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\utilisateur.cpp
+	"../../include/models/Utilisateur.hpp"
+
