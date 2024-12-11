@@ -2,12 +2,14 @@
 
 ## 📑 Table des matières
 
-1. [Introduction](https://www.notion.so/Documentation-Technique-ERP-de-Gestion-Scolaire-14b95ef1091780408795cc9c0a67d328?pvs=21)
-2. [Architecture du Projet](https://www.notion.so/Documentation-Technique-ERP-de-Gestion-Scolaire-14b95ef1091780408795cc9c0a67d328?pvs=21)
-3. [Base de données](https://www.notion.so/Documentation-Technique-ERP-de-Gestion-Scolaire-14b95ef1091780408795cc9c0a67d328?pvs=21)
-4. [Conception Orientée Objet](https://www.notion.so/Documentation-Technique-ERP-de-Gestion-Scolaire-14b95ef1091780408795cc9c0a67d328?pvs=21)
-5. [Implémentation](https://www.notion.so/Documentation-Technique-ERP-de-Gestion-Scolaire-14b95ef1091780408795cc9c0a67d328?pvs=21)
-6. [Interface Utilisateur](https://www.notion.so/Documentation-Technique-ERP-de-Gestion-Scolaire-14b95ef1091780408795cc9c0a67d328?pvs=21)
+1. [Introduction](#introduction)
+2. [Architecture du Projet](#architecture-du-projet)
+3. [Base de données](#base-de-données)
+4. [Conception Orientée Objet](#conception-orientée-objet)
+5. [Implémentation](#implémentation)
+6. [Interface Utilisateur](#interface-utilisateur)
+7. [Gestion des Utilisateurs et des Parents](#gestion-des-utilisateurs-et-des-parents)
+8. [Gestion des Factures et Paiements](#gestion-des-factures-et-paiements)
 
 ## Introduction
 
@@ -20,7 +22,7 @@ Le projet consiste en un ERP (Enterprise Resource Planning) de gestion scolaire 
 - Gestion des notes et évaluations
 - Suivi de la vie scolaire
 
-## Architecture
+## Architecture du Projet
 
 ### Structure des dossiers
 
@@ -74,6 +76,45 @@ project/
 - **include/** : Contient les fichiers d'en-tête pour les différentes parties du code, organisés de manière similaire à `src/`.
 
 - **docs/** : Contient la documentation du projet.
+
+ Avantages Principaux
+
+1. **Organisation Claire**
+    - Chaque fichier a un rôle précis
+    - Facile de trouver où modifier le code
+2. **Maintenance Facilitée**
+    - Modification d'une partie sans toucher aux autres
+    - Tests plus simples
+3. **Sécurité Améliorée**
+    - Validation des données à plusieurs niveaux
+    - Accès contrôlé à la base de données
+
+
+## Comment ça fonctionne ?
+
+### Exemple d'une opération typique :
+
+```
+1. L'utilisateur veut créer un compte
+   ↓
+2. Le modèle Utilisateur vérifie les données
+   ↓
+3. UtilisateurDAO prépare la requête SQL
+   ↓
+4. DatabaseConnection exécute la requête
+   ↓
+5. Le résultat remonte la chaîne
+
+```
+
+## En Résumé
+
+- Les **Models** définissent la structure des données
+- Les **DAO** gèrent l'accès à la base de données
+- La **DatabaseConnection** centralise les opérations MySQL
+- Chaque partie a un rôle distinct et communique avec les autres de manière organisée
+
+C'est comme une usine où chaque service a son rôle précis et collabore avec les autres de manière ordonnée.
 
 Cette structure est conçue pour séparer clairement les différentes responsabilités du code, facilitant ainsi la maintenance et l'évolution du projet. 
 
@@ -360,19 +401,6 @@ CREATE TABLE reunions (
 
 ```
 
-### Table `parents`
-
-```sql
-CREATE TABLE parents (
-    id_parent INT PRIMARY KEY AUTO_INCREMENT,
-    nom VARCHAR(50) NOT NULL,
-    prenom VARCHAR(50) NOT NULL,
-    login VARCHAR(50) UNIQUE NOT NULL,
-    actif BOOLEAN DEFAULT TRUE
-);
-
-```
-
 ### Table `eleve_parent`
 
 ```sql
@@ -381,7 +409,7 @@ CREATE TABLE eleve_parent (
     id_parent INT,
     PRIMARY KEY (id_eleve, id_parent),
     FOREIGN KEY (id_eleve) REFERENCES utilisateurs(id_utilisateur),
-    FOREIGN KEY (id_parent) REFERENCES parents(id_parent)
+    FOREIGN KEY (id_parent) REFERENCES utilisateurs(id_utilisateur)
 );
 
 ```
@@ -722,94 +750,52 @@ Fonctionnalités :
 
 ---
 
-# Architecture du Projet ECOLSYSTEM2 - Vue Simplifiée
+## Gestion des Utilisateurs et des Parents
 
-## 1. Structure de Base
+### Gestion des Utilisateurs
 
-```
-ECOLSYSTEM2/
-├── include/  → Définitions "Quoi faire?"
-├── src/      → Implémentations "Comment le faire?"
-└── bin/      → Fichiers compilés
+*[Capture d'écran à insérer]*
 
-```
+Fonctionnalités :
 
-## 2. Les Trois Grandes Parties
+- Création d'utilisateurs
+- Modification des informations
+- Activation/désactivation de comptes
+- Recherche et filtrage
 
-### A. Les Modèles (Models)
+### Gestion des Parents
 
-- **Rôle** : Représentent les objets du système
-- **Exemple** :
-    
-    ```cpp
-    class Utilisateur {
-        string nom;
-        string prenom;
-        // ...
-    }
-    
-    ```
-    
-- **Utilité** : Définir la structure des données
+*[Capture d'écran à insérer]*
 
-### B. Les DAO (Data Access Objects)
+Fonctionnalités :
 
-- **Rôle** : Gèrent l'accès à la base de données
-- **Exemple** :
-    
-    ```cpp
-    class UtilisateurDAO {
-        bool ajouter(Utilisateur u);
-        Utilisateur* getById(int id);
-    }
-    
-    ```
-    
-- **Utilité** : Séparer la logique de base de données du reste du code
+- Ajout de parents
+- Gestion des enfants
+- Suivi des absences
+- Communication avec les parents
 
-### C. La Connexion Base de Données
+## Gestion des Factures et Paiements
 
-- **Rôle** : Gère la connexion MySQL
-- **Utilité** : Point central pour toutes les opérations de base de données
+### Gestion des Factures
 
-## 3. Comment ça fonctionne ?
+*[Capture d'écran à insérer]*
 
-### Exemple d'une opération typique :
+Fonctionnalités :
 
-```
-1. L'utilisateur veut créer un compte
-   ↓
-2. Le modèle Utilisateur vérifie les données
-   ↓
-3. UtilisateurDAO prépare la requête SQL
-   ↓
-4. DatabaseConnection exécute la requête
-   ↓
-5. Le résultat remonte la chaîne
+- Émission des factures
+- Suivi des paiements
+- Gestion des échéances
 
-```
+### Gestion des Paiements
 
-## 4. Avantages Principaux
+*[Capture d'écran à insérer]*
 
-1. **Organisation Claire**
-    - Chaque fichier a un rôle précis
-    - Facile de trouver où modifier le code
-2. **Maintenance Facilitée**
-    - Modification d'une partie sans toucher aux autres
-    - Tests plus simples
-3. **Sécurité Améliorée**
-    - Validation des données à plusieurs niveaux
-    - Accès contrôlé à la base de données
+Fonctionnalités :
 
-## 5. En Résumé
-
-- Les **Models** définissent la structure des données
-- Les **DAO** gèrent l'accès à la base de données
-- La **DatabaseConnection** centralise les opérations MySQL
-- Chaque partie a un rôle distinct et communique avec les autres de manière organisée
-
-C'est comme une usine où chaque service a son rôle précis et collabore avec les autres de manière ordonnée.
+- Traitement des paiements
+- Suivi des paiements
+- Gestion des méthodes de paiement
 
 ---
 
-[Rapport Technique - ERP de Gestion Scolaire (V2)](https://www.notion.so/Rapport-Technique-ERP-de-Gestion-Scolaire-V2-15595ef10917809da8f6e2cdcd818d89?pvs=21)
+
