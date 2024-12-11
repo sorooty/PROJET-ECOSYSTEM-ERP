@@ -106,6 +106,22 @@ Les modèles représentent les entités principales du système. Chaque modèle 
 
   **Commentaire :** La classe `Communication` facilite l'échange d'informations entre les utilisateurs, ce qui est essentiel pour la coordination et la gestion des événements scolaires.
 
+- **Note** : Représente une note attribuée à un élève pour une matière spécifique, avec des attributs comme `note`, `coefficient`, `typeEvaluation`, etc. Les méthodes incluent des getters, setters, et une méthode de validation.
+
+  **Commentaire :** La classe `Note` est essentielle pour le suivi académique des élèves, permettant de calculer les moyennes et d'évaluer les performances.
+
+- **Reunion** : Représente une réunion scolaire avec des attributs comme `titre`, `dateReunion`, `heureDebut`, `typeReunion`, etc. Les méthodes permettent de gérer les participants et de valider les détails de la réunion.
+
+  **Commentaire :** La gestion des réunions est cruciale pour la coordination entre les enseignants, les parents et l'administration.
+
+- **Pointage** : Représente le pointage d'un élève avec des attributs comme `datePointage`, `heureArrivee`, `heureDepart`, etc. Les méthodes incluent la validation du pointage et la gestion des retards.
+
+  **Commentaire :** Le système de pointage aide à suivre la présence des élèves et à identifier les retards.
+
+- **Enseignement** : Représente l'enseignement d'une matière par un professeur à une classe, avec des attributs comme `idProfesseur`, `idMatiere`, `idClasse`, etc. Les méthodes permettent de gérer l'association entre les professeurs, les matières et les classes.
+
+  **Commentaire :** La classe `Enseignement` est essentielle pour organiser les cours et les responsabilités des enseignants.
+
 ### 2. DAO (Data Access Object)
 
 Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO fournit des méthodes pour effectuer des opérations CRUD (Create, Read, Update, Delete) sur les entités correspondantes.
@@ -134,6 +150,22 @@ Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO 
 
   **Commentaire :** Ce DAO facilite la gestion des communications internes, ce qui est essentiel pour une bonne coordination.
 
+- **NoteDAO** : Gère les opérations de base de données pour les notes, y compris l'ajout, la modification et la suppression des notes.
+
+  **Commentaire :** Ce DAO est crucial pour le suivi des performances académiques et la génération de bulletins.
+
+- **ReunionDAO** : Gère les opérations de base de données pour les réunions, y compris l'ajout et la gestion des participants.
+
+  **Commentaire :** La gestion des réunions via un DAO permet de planifier efficacement les événements scolaires.
+
+- **PointageDAO** : Gère les opérations de base de données pour le pointage, y compris l'enregistrement des arrivées et des départs.
+
+  **Commentaire :** Ce DAO facilite le suivi de la présence des élèves et la gestion des retards.
+
+- **EnseignementDAO** : Gère les opérations de base de données pour les enseignements, y compris l'association des professeurs aux matières et aux classes.
+
+  **Commentaire :** La gestion des enseignements via un DAO assure une organisation claire des cours et des responsabilités des enseignants.
+
 ### 3. Main
 
 Le fichier `main.cpp` contient le point d'entrée du programme. Il gère l'affichage des menus et la navigation entre les différentes fonctionnalités du système.
@@ -153,6 +185,8 @@ Le fichier `main.cpp` contient le point d'entrée du programme. Il gère l'affic
 3. **MVC** : Séparation des responsabilités
 
    **Commentaire :** Le pattern MVC (Modèle-Vue-Contrôleur) est utilisé pour structurer l'application de manière à séparer les données, la logique de l'application et l'interface utilisateur, ce qui améliore la modularité et la testabilité du code.
+
+
 
 ## Base de données
 
@@ -326,6 +360,61 @@ CREATE TABLE reunions (
 
 ```
 
+### Table `parents`
+
+```sql
+CREATE TABLE parents (
+    id_parent INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    login VARCHAR(50) UNIQUE NOT NULL,
+    actif BOOLEAN DEFAULT TRUE
+);
+
+```
+
+### Table `eleve_parent`
+
+```sql
+CREATE TABLE eleve_parent (
+    id_eleve INT,
+    id_parent INT,
+    PRIMARY KEY (id_eleve, id_parent),
+    FOREIGN KEY (id_eleve) REFERENCES utilisateurs(id_utilisateur),
+    FOREIGN KEY (id_parent) REFERENCES parents(id_parent)
+);
+
+```
+
+### Table `factures`
+
+```sql
+CREATE TABLE factures (
+    id_facture INT PRIMARY KEY AUTO_INCREMENT,
+    id_eleve INT,
+    montant_total DECIMAL(10,2) NOT NULL,
+    date_emission DATE NOT NULL,
+    date_echeance DATE NOT NULL,
+    statut ENUM('payée', 'en attente', 'en retard') DEFAULT 'en attente',
+    FOREIGN KEY (id_eleve) REFERENCES utilisateurs(id_utilisateur)
+);
+
+```
+
+### Table `paiements`
+
+```sql
+CREATE TABLE paiements (
+    id_paiement INT PRIMARY KEY AUTO_INCREMENT,
+    id_facture INT,
+    montant DECIMAL(10,2) NOT NULL,
+    date_paiement DATE NOT NULL,
+    methode_paiement VARCHAR(50),
+    FOREIGN KEY (id_facture) REFERENCES factures(id_facture)
+);
+
+```
+
 ## Conception Orientée Objet
 
 ### Définitions et Notions de Base
@@ -404,9 +493,17 @@ classDiagram
         +gererSysteme() void
     }
 
+    class Parent {
+        -int idParent
+        -list<int> enfantsIds
+        +getters/setters()
+        +ajouterEnfant(int eleveId) bool
+    }
+
     Utilisateur <|-- Eleve
     Utilisateur <|-- Professeur
     Utilisateur <|-- Admin
+    Utilisateur <|-- Parent
 ```
 
 #### Diagramme de Classes - Classe et Eleve
@@ -510,6 +607,34 @@ classDiagram
 
     Communication "*" --> "1" Utilisateur : expediteur
     Communication "*" --> "*" Utilisateur : destinataires
+```
+
+#### Diagramme de Classes - Paiement et Factures
+
+```mermaid
+classDiagram
+    class Paiement {
+        -int id
+        -int factureId
+        -float montant
+        -string datePaiement
+        -string methodePaiement
+        +estValide() bool
+    }
+
+    class Facture {
+        -int id
+        -int eleveId
+        -float montantTotal
+        -string dateEmission
+        -string dateEcheance
+        -string statut
+        +ajouterPaiement(Paiement paiement) bool
+        +estValide() bool
+    }
+
+    Facture "1" --> "*" Paiement
+    Facture "*" --> "1" Eleve
 ```
 
 ## Implémentation
