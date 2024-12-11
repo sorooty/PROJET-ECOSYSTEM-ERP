@@ -207,6 +207,27 @@ Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO 
 
   **Commentaire :** La gestion des enseignements via un DAO assure une organisation claire des cours et des responsabilités des enseignants.
 
+---
+## Modèles - Version Tableau
+
+| Modèle       | Attributs Principaux                                                                 | Méthodes Principales                                  | Commentaire                                                                                   |
+|--------------|--------------------------------------------------------------------------------------|-------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| **Utilisateur** | `id`, `nom`, `prenom`, `login`, `type`                                              | `verifierDroits(action)`, `estValide()`               | Gère les informations de base de chaque utilisateur.                                          |
+| **Eleve**       | `idEleve`, `classeId`                                                               | `getters/setters`, `inscrireClasse(classeId)`         | Représente un élève et gère son inscription en classe.                                        |
+| **Professeur**  | `idProfesseur`, `matieres`                                                          | `getters/setters`, `ajouterMatiere(matiereId)`        | Gère les matières enseignées par un professeur.                                               |
+| **Admin**       | `idAdmin`                                                                           | `gererUtilisateurs()`, `gererSysteme()`               | Gère les utilisateurs et le système.                                                          |
+| **Parent**      | `idParent`, `enfantsIds`                                                            | `getters/setters`, `ajouterEnfant(eleveId)`           | Gère les informations des parents et leur association avec les élèves.                        |
+| **Classe**      | `id`, `nom`, `niveau`                                                               | `ajouterEleve(eleveId)`, `estValide()`                | Représente une classe scolaire et gère les élèves inscrits.                                   |
+| **Pointage**    | `id`, `eleveId`, `datePointage`, `heureArrivee`, `heureDepart`, `statut`, `commentaire`, `validateurId` | `estValide()`, `estRetard()`                          | Gère le pointage des élèves et identifie les retards.                                         |
+| **Absence**     | `id`, `eleveId`, `dateDebut`, `dateFin`, `justifie`, `motif`                        | `estValide()`                                         | Gère les absences des élèves et leur justification.                                           |
+| **Retard**      | `id`, `eleveId`, `dateRetard`, `heureArrivee`, `dureeMinutes`, `justifie`, `motif`, `validateurId` | `estValide()`                                         | Gère les retards des élèves et leur justification.                                            |
+| **Retenue**     | `id`, `eleveId`, `dateRetenue`, `heureDebut`, `heureFin`, `motif`, `professeurId`, `statut`, `commentaire` | `estValide()`                                         | Gère les retenues des élèves et leur organisation.                                            |
+| **Communication** | `id`, `typeCommunication`, `titre`, `contenu`, `dateEnvoi`, `expediteurId`, `importance`, `pieceJointe`, `destinatairesIds` | `ajouterDestinataire(int)`, `retirerDestinataire(int)`, `estValide()` | Facilite l'échange d'informations entre les utilisateurs.                                     |
+| **Facture**     | `id`, `eleveId`, `montantTotal`, `dateEmission`, `dateEcheance`, `statut`          | `ajouterPaiement(Paiement paiement)`, `estValide()`   | Gère les factures des élèves et leur statut de paiement.                                      |
+| **Paiement**    | `id`, `factureId`, `montant`, `datePaiement`, `methodePaiement`                    | `estValide()`                                         | Gère les paiements effectués pour les factures.                                               |
+
+
+---
 ### 3. Main
 
 Le fichier `main.cpp` contient le point d'entrée du programme. Il gère l'affichage des menus et la navigation entre les différentes fonctionnalités du système.
@@ -226,24 +247,6 @@ Le fichier `main.cpp` contient le point d'entrée du programme. Il gère l'affic
 3. **MVC** : Séparation des responsabilités
 
    **Commentaire :** Le pattern MVC (Modèle-Vue-Contrôleur) est utilisé pour structurer l'application de manière à séparer les données, la logique de l'application et l'interface utilisateur, ce qui améliore la modularité et la testabilité du code.
-
-## Modèles - Version Tableau
-
-| Modèle       | Attributs Principaux                                                                 | Méthodes Principales                                  | Commentaire                                                                                   |
-|--------------|--------------------------------------------------------------------------------------|-------------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| **Utilisateur** | `id`, `nom`, `prenom`, `login`, `type`                                              | `verifierDroits(action)`, `estValide()`               | Gère les informations de base de chaque utilisateur.                                          |
-| **Eleve**       | `idEleve`, `classeId`                                                               | `getters/setters`, `inscrireClasse(classeId)`         | Représente un élève et gère son inscription en classe.                                        |
-| **Professeur**  | `idProfesseur`, `matieres`                                                          | `getters/setters`, `ajouterMatiere(matiereId)`        | Gère les matières enseignées par un professeur.                                               |
-| **Admin**       | `idAdmin`                                                                           | `gererUtilisateurs()`, `gererSysteme()`               | Gère les utilisateurs et le système.                                                          |
-| **Parent**      | `idParent`, `enfantsIds`                                                            | `getters/setters`, `ajouterEnfant(eleveId)`           | Gère les informations des parents et leur association avec les élèves.                        |
-| **Classe**      | `id`, `nom`, `niveau`                                                               | `ajouterEleve(eleveId)`, `estValide()`                | Représente une classe scolaire et gère les élèves inscrits.                                   |
-| **Pointage**    | `id`, `eleveId`, `datePointage`, `heureArrivee`, `heureDepart`, `statut`, `commentaire`, `validateurId` | `estValide()`, `estRetard()`                          | Gère le pointage des élèves et identifie les retards.                                         |
-| **Absence**     | `id`, `eleveId`, `dateDebut`, `dateFin`, `justifie`, `motif`                        | `estValide()`                                         | Gère les absences des élèves et leur justification.                                           |
-| **Retard**      | `id`, `eleveId`, `dateRetard`, `heureArrivee`, `dureeMinutes`, `justifie`, `motif`, `validateurId` | `estValide()`                                         | Gère les retards des élèves et leur justification.                                            |
-| **Retenue**     | `id`, `eleveId`, `dateRetenue`, `heureDebut`, `heureFin`, `motif`, `professeurId`, `statut`, `commentaire` | `estValide()`                                         | Gère les retenues des élèves et leur organisation.                                            |
-| **Communication** | `id`, `typeCommunication`, `titre`, `contenu`, `dateEnvoi`, `expediteurId`, `importance`, `pieceJointe`, `destinatairesIds` | `ajouterDestinataire(int)`, `retirerDestinataire(int)`, `estValide()` | Facilite l'échange d'informations entre les utilisateurs.                                     |
-| **Facture**     | `id`, `eleveId`, `montantTotal`, `dateEmission`, `dateEcheance`, `statut`          | `ajouterPaiement(Paiement paiement)`, `estValide()`   | Gère les factures des élèves et leur statut de paiement.                                      |
-| **Paiement**    | `id`, `factureId`, `montant`, `datePaiement`, `methodePaiement`                    | `estValide()`                                         | Gère les paiements effectués pour les factures.                                               |
 
 
 
