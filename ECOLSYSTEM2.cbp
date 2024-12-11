@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ECOLSYSTEM2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/ECOLSYSTEM2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=gnu++11" />
+					<Add option="-g" />
+					<Add directory="C:/Program Files/MySQL/MySQL Server 8.0/include" />
+				</Compiler>
+				<Linker>
+					<Add library="C:/Program Files/MySQL/MySQL Server 8.0/lib/libmysql.lib" />
+					<Add library="C:/Program Files/MySQL/MySQL Server 8.0/lib/mysqlclient.lib" />
+					<Add directory="C:/Program Files/MySQL/MySQL Server 8.0/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/ECOLSYSTEM2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename=".gitignore" />
+		<Unit filename="include/dao/AbsenceDAO.hpp" />
+		<Unit filename="include/dao/ClasseDAO.hpp" />
+		<Unit filename="include/dao/CommunicationDAO.hpp" />
+		<Unit filename="include/dao/EnseignementDAO.hpp" />
+		<Unit filename="include/dao/MatiereDAO.hpp" />
+		<Unit filename="include/dao/NoteDAO.hpp" />
+		<Unit filename="include/dao/PointageDAO.hpp" />
+		<Unit filename="include/dao/RetardDAO.hpp" />
+		<Unit filename="include/dao/RetenueDAO.hpp" />
+		<Unit filename="include/dao/ReunionDAO.hpp" />
+		<Unit filename="include/dao/UtilisateurDAO.hpp" />
+		<Unit filename="include/databaseConnection.hpp" />
+		<Unit filename="include/models/Absence.hpp" />
+		<Unit filename="include/models/Classe.hpp" />
+		<Unit filename="include/models/Communication.hpp" />
+		<Unit filename="include/models/Enseignement.hpp" />
+		<Unit filename="include/models/Matiere.hpp" />
+		<Unit filename="include/models/Note.hpp" />
+		<Unit filename="include/models/Pointage.hpp" />
+		<Unit filename="include/models/Retard.hpp" />
+		<Unit filename="include/models/Retenue.hpp" />
+		<Unit filename="include/models/Reunion.hpp" />
+		<Unit filename="include/models/Utilisateur.hpp" />
+		<Unit filename="src/dao/AbsenceDAO.cpp" />
+		<Unit filename="src/dao/ClasseDAO.cpp" />
+		<Unit filename="src/dao/CommunicationDAO.cpp" />
+		<Unit filename="src/dao/EnseignementDAO.cpp" />
+		<Unit filename="src/dao/MatiereDAO.cpp" />
+		<Unit filename="src/dao/NoteDAO.cpp" />
+		<Unit filename="src/dao/PointageDAO.cpp" />
+		<Unit filename="src/dao/RetardDAO.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/dao/RetenueDAO.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/dao/ReunionDAO.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/dao/UtilisateurDAO.cpp" />
+		<Unit filename="src/databaseConnection.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/models/Absence.cpp" />
+		<Unit filename="src/models/Classe.cpp" />
+		<Unit filename="src/models/Communication.cpp" />
+		<Unit filename="src/models/Enseignement.cpp" />
+		<Unit filename="src/models/Matiere.cpp" />
+		<Unit filename="src/models/Note.cpp" />
+		<Unit filename="src/models/Pointage.cpp" />
+		<Unit filename="src/models/Retard.cpp" />
+		<Unit filename="src/models/Retenue.cpp" />
+		<Unit filename="src/models/Reunion.cpp" />
+		<Unit filename="src/models/Utilisateur.cpp" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

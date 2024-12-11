@@ -1,0 +1,222 @@
+Je vais vous faire un inventaire complet et structuré du projet :
+
+# 1. Classes de Base (Models)
+
+## Utilisateur (Classe de base)
+**Attributs :**
+- id: int
+- nom: string
+- prenom: string
+- login: string
+- type: string
+- dateCreation: string
+- actif: bool
+
+**Méthodes :**
+- Constructeurs
+- Getters/Setters
+- verifierDroits(action: string): bool
+- estValide(): bool
+- getNomComplet(): string
+
+## Eleve (hérite de Utilisateur)
+**Attributs additionnels :**
+- idEleve: int
+- classeId: int
+- parentId: int
+- dateNaissance: string
+- dateInscription: string
+
+## Classe
+**Attributs :**
+- id: int
+- nom: string
+- niveau: string
+- anneeScolaire: string
+- professeurPrincipalId: int
+- capaciteMax: int
+- sallePrincipale: string
+- elevesIds: vector<int>
+
+**Méthodes :**
+- ajouterEleve(eleveId: int): bool
+- retirerEleve(eleveId: int): bool
+- estPleine(): bool
+- getNombreEleves(): int
+- estValide(): bool
+- toString(): string
+
+## Matiere
+**Attributs :**
+- id: int
+- nom: string
+- description: string
+- coefficient: int
+- volumeHoraire: int
+
+**Méthodes :**
+- estValide(): bool
+- toString(): string
+
+## Note
+**Attributs :**
+- id: int
+- eleveId: int
+- matiereId: int
+- professeurId: int
+- valeur: double
+- coefficient: int
+- typeEvaluation: string
+- dateEvaluation: string
+- commentaire: string
+
+**Méthodes :**
+- estValide(): bool
+
+## Pointage
+**Attributs :**
+- id: int
+- eleveId: int
+- datePointage: string
+- heureArrivee: string
+- heureDepart: string
+- statut: string
+- commentaire: string
+- validateurId: int
+
+**Méthodes :**
+- estValide(): bool
+- estRetard(): bool
+
+## Absence
+**Attributs :**
+- id: int
+- eleveId: int
+- dateDebut: string
+- dateFin: string
+- justifie: bool
+- motif: string
+
+**Méthodes :**
+- estValide(): bool
+
+## Retard
+**Attributs :**
+- id: int
+- eleveId: int
+- dateRetard: string
+- heureArrivee: string
+- dureeMinutes: int
+- justifie: bool
+- motif: string
+- validateurId: int
+
+**Méthodes :**
+- estValide(): bool
+
+## Retenue
+**Attributs :**
+- id: int
+- eleveId: int
+- dateRetenue: string
+- heureDebut: string
+- heureFin: string
+- motif: string
+- professeurId: int
+- statut: string
+- commentaire: string
+
+**Méthodes :**
+- estValide(): bool
+
+## Communication
+**Attributs :**
+- id: int
+- typeCommunication: string
+- titre: string
+- contenu: string
+- dateEnvoi: string
+- expediteurId: int
+- importance: string
+- pieceJointe: string
+- destinatairesIds: vector<int>
+
+**Méthodes :**
+- ajouterDestinataire(destinataireId: int): bool
+- retirerDestinataire(destinataireId: int): bool
+- estValide(): bool
+
+# 2. Classes DAO (Data Access Objects)
+
+Chaque classe modèle a sa classe DAO correspondante avec les méthodes CRUD standard :
+- ajouter()
+- modifier()
+- supprimer()
+- getById()
+- getAll()
+
+## Méthodes spécifiques notables par DAO :
+
+### UtilisateurDAO
+- rechercherParType()
+- rechercherParNom()
+- activerUtilisateur()
+- desactiverUtilisateur()
+- compterParType()
+
+### ClasseDAO
+- inscrireEleve()
+- desinscrireEleve()
+- getElevesClasse()
+- verifierCapacite()
+
+### MatiereDAO
+- assignerProfesseur()
+- retirerProfesseur()
+- getMatieresParClasse()
+- getMatieresParProfesseur()
+
+### NoteDAO
+- getNotesEleve()
+- getMoyenneEleve()
+- getMoyenneClasse()
+
+### PointageDAO
+- enregistrerArrivee()
+- enregistrerDepart()
+- getPointagesJour()
+- getRetardsEleve()
+
+### AbsenceDAO
+- getAbsencesEleve()
+- justifierAbsence()
+- compterAbsencesEleve()
+
+### RetardDAO
+- justifierRetard()
+- compterRetardsEleve()
+
+### RetenueDAO
+- marquerEffectuee()
+- marquerAnnulee()
+
+# 3. Classe Utilitaire
+
+## DatabaseConnection (Singleton)
+**Attributs :**
+- connection: MYSQL*
+- instance: DatabaseConnection*
+
+**Méthodes :**
+- getInstance(): DatabaseConnection*
+- executeQuery(query: string): bool
+- getResult(): MYSQL_RES*
+- getLastError(): string
+
+Cette structure montre une architecture orientée objet claire avec :
+- Séparation des responsabilités (Models/DAO)
+- Héritage (Eleve hérite de Utilisateur)
+- Pattern Singleton (DatabaseConnection)
+- Pattern DAO pour l'accès aux données
+
+Voulez-vous que je détaille davantage certains aspects pour vos diagrammes UML ?
