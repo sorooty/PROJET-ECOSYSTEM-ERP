@@ -405,7 +405,7 @@
 1733383798 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\databaseconnection.cpp
 	"../include/databaseConnection.hpp"
 
-1733596119 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\main.cpp
+1733957194 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\main.cpp
 	<iostream>
 	<string>
 	<iomanip>
@@ -418,6 +418,10 @@
 	"../include/dao/NoteDAO.hpp"
 	"../include/dao/CommunicationDAO.hpp"
 	"../include/dao/EnseignementDAO.hpp"
+	"../include/dao/FactureDAO.hpp"
+	"../include/dao/PaiementDAO.hpp"
+	"../include/models/Facture.hpp"
+	"../include/models/Paiement.hpp"
 
 1733413145 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\absence.cpp
 	"../../include/models/Absence.hpp"
@@ -462,4 +466,34 @@
 
 1733098870 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\utilisateur.cpp
 	"../../include/models/Utilisateur.hpp"
+
+1733957260 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\facturedao.cpp
+	"../../include/dao/FactureDAO.hpp"
+	<sstream>
+
+1733956434 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\facturedao.hpp
+	"../models/Facture.hpp"
+	"../DatabaseConnection.hpp"
+	<vector>
+
+1733956391 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\facture.hpp
+	<string>
+
+1733956964 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\dao\paiementdao.hpp
+	"../models/Paiement.hpp"
+	"../DatabaseConnection.hpp"
+	<vector>
+
+1733956395 c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\include\models\paiement.hpp
+	<string>
+
+1733956911 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\dao\paiementdao.cpp
+	"../../include/dao/PaiementDAO.hpp"
+	<sstream>
+
+1733957379 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\facture.cpp
+	"../../include/models/Facture.hpp"
+
+1733957253 source:c:\users\balde\onedrive\documents\cesi 2024-2025\informatique\projets informatiques\projet 12 - erp c++\test erp cblocks c 1\ecolsystem2\src\models\paiement.cpp
+	"../../include/models/Paiement.hpp"
 

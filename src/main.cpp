@@ -10,6 +10,10 @@
 #include "../include/dao/NoteDAO.hpp"
 #include "../include/dao/CommunicationDAO.hpp"
 #include "../include/dao/EnseignementDAO.hpp"
+#include "../include/dao/FactureDAO.hpp"
+#include "../include/dao/PaiementDAO.hpp"
+#include "../include/models/Facture.hpp"
+#include "../include/models/Paiement.hpp"
 
 // Fonction pour afficher le menu principal
 void afficherMenuPrincipal() {
@@ -22,6 +26,7 @@ void afficherMenuPrincipal() {
     std::cout << "6. Gestion du pointage" << std::endl;
     std::cout << "7. Gestion des communications" << std::endl;  // Nouvelle option
     std::cout << "8. Gestion des enseignements" << std::endl;
+    std::cout << "9. Gestion des factures et paiements" << std::endl;
     std::cout << "0. Quitter" << std::endl;
     std::cout << "Choix : ";
 }
@@ -132,6 +137,17 @@ void afficherMenuEnseignements() {
     std::cout << "3. Voir les enseignements par classe" << std::endl;
     std::cout << "4. Voir les enseignements par matière" << std::endl;
     std::cout << "5. Supprimer un enseignement" << std::endl;
+    std::cout << "0. Retour au menu principal" << std::endl;
+    std::cout << "Choix : ";
+}
+
+void afficherMenuFactures() {
+    std::cout << "\n=== GESTION DES FACTURES ET PAIEMENTS ===" << std::endl;
+    std::cout << "1. Créer une facture" << std::endl;
+    std::cout << "2. Afficher les factures d'un élève" << std::endl;
+    std::cout << "3. Enregistrer un paiement" << std::endl;
+    std::cout << "4. Afficher les factures impayées" << std::endl;
+    std::cout << "5. Voir l'historique des paiements" << std::endl;
     std::cout << "0. Retour au menu principal" << std::endl;
     std::cout << "Choix : ";
 }
@@ -551,7 +567,7 @@ int main() {
 
                             case 3: {  // Modifier une matière
                                 int matiereId;
-                                std::cout << "ID de la matière à modifier : ";
+                                std::cout << "ID de la matière �� modifier : ";
                                 std::cin >> matiereId;
                                 std::cin.ignore(10000, '\n');
 
@@ -1227,6 +1243,162 @@ int main() {
                                 std::cout << "Option invalide!" << std::endl;
                         }
                     } while(choixEns != 0);
+                    break;
+                }
+                case 9: {  // Gestion des factures et paiements
+                    FactureDAO factureDAO;
+                    PaiementDAO paiementDAO;
+                    int choixFacture;
+
+                    do {
+                        afficherMenuFactures();
+                        std::cin >> choixFacture;
+                        std::cin.ignore(10000, '\n');
+
+                        switch(choixFacture) {
+                            case 1: {  // Créer une facture
+                                int eleveId;
+                                double montantTotal;
+                                std::string dateEmission, dateEcheance;
+
+                                std::cout << "ID de l'élève : ";
+                                std::cin >> eleveId;
+                                std::cin.ignore(10000, '\n');
+
+                                std::cout << "Montant total : ";
+                                std::cin >> montantTotal;
+                                std::cin.ignore(10000, '\n');
+
+                                std::cout << "Date d'émission (YYYY-MM-DD) : ";
+                                std::getline(std::cin, dateEmission);
+
+                                std::cout << "Date d'échéance (YYYY-MM-DD) : ";
+                                std::getline(std::cin, dateEcheance);
+
+                                Facture facture(eleveId, montantTotal, dateEmission, dateEcheance);
+                                if (factureDAO.ajouter(facture)) {
+                                    std::cout << "Facture créée avec succès!" << std::endl;
+                                } else {
+                                    std::cout << "Erreur lors de la création de la facture." << std::endl;
+                                }
+                                break;
+                            }
+
+                            case 2: {  // Afficher les factures d'un élève
+                                int eleveId;
+                                std::cout << "ID de l'élève : ";
+                                std::cin >> eleveId;
+
+                                auto factures = factureDAO.getFacturesEleve(eleveId);
+                                if(factures.empty()) {
+                                    std::cout << "Aucune facture trouvée pour cet élève." << std::endl;
+                                } else {
+                                    std::cout << "\n=== FACTURES DE L'ÉLÈVE ===" << std::endl;
+                                    std::cout << std::setw(5) << "ID" 
+                                             << std::setw(15) << "Montant" 
+                                             << std::setw(15) << "Émission"
+                                             << std::setw(15) << "Échéance"
+                                             << std::setw(15) << "Statut" << std::endl;
+                                    std::cout << std::string(65, '-') << std::endl;
+
+                                    for(const auto& f : factures) {
+                                        std::cout << std::setw(5) << f.getId()
+                                                << std::setw(15) << f.getMontantTotal()
+                                                << std::setw(15) << f.getDateEmission()
+                                                << std::setw(15) << f.getDateEcheance()
+                                                << std::setw(15) << f.getStatut() << std::endl;
+                                    }
+                                }
+                                break;
+                            }
+
+                            case 3: {  // Enregistrer un paiement
+                                int factureId;
+                                double montant;
+                                std::string methodePaiement;
+
+                                std::cout << "ID de la facture : ";
+                                std::cin >> factureId;
+                                std::cin.ignore(10000, '\n');
+
+                                std::cout << "Montant du paiement : ";
+                                std::cin >> montant;
+                                std::cin.ignore(10000, '\n');
+
+                                std::cout << "Méthode de paiement : ";
+                                std::getline(std::cin, methodePaiement);
+
+                                time_t now = time(0);
+                                struct tm* ltm = localtime(&now);
+                                std::stringstream datePaiement;
+                                datePaiement << std::put_time(ltm, "%Y-%m-%d");
+
+                                Paiement paiement(factureId, montant, datePaiement.str(), methodePaiement);
+                                if (paiementDAO.ajouter(paiement)) {
+                                    factureDAO.mettreAJourStatut(factureId, "payée");
+                                    std::cout << "Paiement enregistré avec succès!" << std::endl;
+                                } else {
+                                    std::cout << "Erreur lors de l'enregistrement du paiement." << std::endl;
+                                }
+                                break;
+                            }
+
+                            case 4: {  // Afficher les factures impayées
+                                auto factures = factureDAO.getFacturesImpayees();
+                                if(factures.empty()) {
+                                    std::cout << "Aucune facture impayée." << std::endl;
+                                } else {
+                                    std::cout << "\n=== FACTURES IMPAYÉES ===" << std::endl;
+                                    std::cout << std::setw(5) << "ID" 
+                                             << std::setw(10) << "Élève"
+                                             << std::setw(15) << "Montant" 
+                                             << std::setw(15) << "Échéance" << std::endl;
+                                    std::cout << std::string(45, '-') << std::endl;
+
+                                    for(const auto& f : factures) {
+                                        std::cout << std::setw(5) << f.getId()
+                                                << std::setw(10) << f.getEleveId()
+                                                << std::setw(15) << f.getMontantTotal()
+                                                << std::setw(15) << f.getDateEcheance() << std::endl;
+                                    }
+                                }
+                                break;
+                            }
+
+                            case 5: {  // Voir l'historique des paiements
+                                int factureId;
+                                std::cout << "ID de la facture : ";
+                                std::cin >> factureId;
+
+                                auto paiements = paiementDAO.getPaiementsParFacture(factureId);
+                                if(paiements.empty()) {
+                                    std::cout << "Aucun paiement trouvé pour cette facture." << std::endl;
+                                } else {
+                                    std::cout << "\n=== HISTORIQUE DES PAIEMENTS ===" << std::endl;
+                                    std::cout << std::setw(5) << "ID" 
+                                             << std::setw(15) << "Montant" 
+                                             << std::setw(15) << "Date"
+                                             << std::setw(20) << "Méthode" << std::endl;
+                                    std::cout << std::string(50, '-') << std::endl;
+
+                                    for(const auto& p : paiements) {
+                                        std::cout << std::setw(5) << p.getId()
+                                                << std::setw(15) << p.getMontant()
+                                                << std::setw(15) << p.getDatePaiement()
+                                                << std::setw(20) << p.getMethodePaiement() << std::endl;
+                                    }
+                                }
+                                break;
+                            }
+
+                            case 0:
+                                std::cout << "Retour au menu principal" << std::endl;
+                                break;
+
+                            default:
+                                std::cout << "Option invalide!" << std::endl;
+                        }
+                    } while(choixFacture != 0);
                     break;
                 }
                 case 0:
