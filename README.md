@@ -736,7 +736,7 @@ public:
 
 ## Interface Utilisateur
 
-### Menu Principal
+## Menu Principal
 
 ![MenuPrincipal](MenuPrincipal.png)
 
@@ -753,7 +753,7 @@ Description : Interface principale permettant l'accès aux différentes fonction
 9. Gestion des factures et paiements
 0. Quitter
 
-### Gestion des Utilisateurs
+## Gestion des Utilisateurs
 
 ![GestionUtilisateurs](MenuGestionUtilisateurs.png)
 
@@ -772,7 +772,7 @@ Fonctionnalités :
 - Vérifier les droits d'un utilisateur
 - Retour au menu principal
 
-### Gestion des Classes
+## Gestion des Classes
 
 ![GestionClasses](MenuGestionClasses.png)
 
@@ -786,7 +786,7 @@ Fonctionnalités :
 - Statistiques de classe
 - Retour au menu principal
 
-### Gestion des Matières
+## Gestion des Matières
 
 ![GestionMatieres](MenuGestionMatieres.png)
 
@@ -800,7 +800,7 @@ Fonctionnalités :
 - Gérer les coefficients
 - Retour au menu principal
 
-### Gestion des Notes
+## Gestion des Notes
 
 ![GestionNotes](MenuGestionNotes.png)
 
@@ -812,7 +812,7 @@ Fonctionnalités :
 - Calculer la moyenne de classe
 - Retour au menu principal
 
-### Gestion des Absences
+## Gestion des Absences
 
 Fonctionnalités :
 - Enregistrer une absence
@@ -822,7 +822,7 @@ Fonctionnalités :
 - Statistiques d'absences
 - Retour au menu principal
 
-### Gestion du Pointage
+## Gestion du Pointage
 
 ![GestionPointage](MenuGestionPointage.png)
 
@@ -834,7 +834,7 @@ Fonctionnalités :
 - Statistiques de présence
 - Retour au menu principal
 
-### Gestion des Communications
+## Gestion des Communications
 
 ![GestionCommunications](MenuGestionCommunications.png)
 
@@ -846,7 +846,7 @@ Fonctionnalités :
 - Archiver une communication
 - Retour au menu principal
 
-### Gestion des Enseignements
+## Gestion des Enseignements
 
 ![GestionEnseignements](MenuGestionEnseignements.png)
 
