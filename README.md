@@ -175,7 +175,7 @@ Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO 
 
   **Commentaire :** Ce DAO assure que les opérations sur les classes sont effectuées de manière cohérente et sécurisée.
 
-- **MatiereDAO** : Gère les opérations de base de données pour les mati��res, y compris l'ajout et la modification des matières.
+- **MatiereDAO** : Gère les opérations de base de données pour les matières, y compris l'ajout et la modification des matières.
 
   **Commentaire :** La gestion des matières via un DAO permet de maintenir une base de données propre et bien structurée.
 
@@ -256,7 +256,7 @@ Le fichier `main.cpp` contient le point d'entrée du programme. Il gère l'affic
 
 - `Host:` localhost
 - `Port:` 3306
-- `Nom de la Base de données:` “***test_ecolsystem”***
+- `Nom de la Base de données:` "***test_ecolsystem"***
 - `Utilisateur`: root
 
 ### Classes principales et leurs tables
@@ -915,7 +915,6 @@ classDiagram
     Communication "*" --> "1" Utilisateur
 ```
 
-
 ## Diagrammes de Séquence
 
 ### Attribution d'une note et calcul de moyenne
@@ -973,195 +972,709 @@ D'autres diagrammes de séquence pourraient être créés pour illustrer :
 
 Ces diagrammes suivraient la même logique de séparation des responsabilités et de clarté dans les interactions entre objets.
 
+### Processus de Pointage d'un Élève
 
+```mermaid
+sequenceDiagram
+    actor E as Eleve
+    participant P as Pointage
+    participant D as PointageDAO
+    participant C as Classe
 
-## Implémentation
-
-### Connexion à la base de données
-
-Le pattern Singleton est utilisé pour garantir une unique instance de connexion :
-
-```cpp
-class DatabaseConnection {
-private:
-    static DatabaseConnection* instance;
-    DatabaseConnection();
-
-public:
-    static DatabaseConnection* getInstance();
-    bool executeQuery(const std::string& query);
-};
-
+    E->>P: enregistrerArrivee()
+    P->>D: sauvegarderPointage()
+    D-->>P: pointage enregistré
+    P->>C: verifierRetard()
+    C-->>P: statut retard
+    P-->>E: confirmation pointage
 ```
 
-### Gestion des utilisateurs
+### Gestion des Absences
 
-La classe `UtilisateurDAO` gère toutes les opérations CRUD :
+```mermaid
+sequenceDiagram
+    actor Pr as Professeur
+    participant E as Eleve
+    participant A as Absence
+    participant D as AbsenceDAO
+    participant Pa as Parent
 
-```cpp
-class UtilisateurDAO {
-public:
-    bool ajouter(const Utilisateur& user);
-    std::vector<Utilisateur> getAll();
-    Utilisateur* getById(int id);
-    bool modifier(const Utilisateur& user);
-};
-
+    Pr->>A: signalerAbsence(Eleve)
+    A->>D: enregistrerAbsence()
+    D-->>A: absence enregistrée
+    A->>Pa: notifierAbsence()
+    Pa->>A: justifierAbsence()
+    A->>D: mettreAJourJustification()
+    D-->>A: justification enregistrée
+    A-->>Pr: absence justifiée
 ```
 
-### Système de pointage
+### Communication Parent-Professeur
 
-Le système de pointage est géré par la classe `PointageDAO` :
+```mermaid
+sequenceDiagram
+    actor Pa as Parent
+    participant C as Communication
+    participant D as CommunicationDAO
+    participant Pr as Professeur
 
-```cpp
-class PointageDAO {
-public:
-    bool enregistrerArrivee(int eleveId, const std::string& heure);
-    bool enregistrerDepart(int eleveId, const std::string& heure);
-    std::vector<Pointage> getPointagesJour(const std::string& date);
-};
-
+    Pa->>C: envoyerMessage(Pr)
+    C->>D: creerCommunication()
+    D-->>C: communication créée
+    C->>Pr: notifierMessage()
+    Pr->>C: lireMessage()
+    C-->>Pa: message lu
 ```
 
-## Interface Utilisateur
+### Gestion des Factures et Paiements
 
-## Menu Principal
+Implémentation de la classe `FactureDAO` :
 
-![MenuPrincipal](MenuPrincipal.png)
+```cpp
+class FactureDAO {
+public:
+    bool creerFacture(const Facture& facture) {
+        std::stringstream query;
+        query << "INSERT INTO factures "
+              << "(id_eleve, montant_total, date_emission, date_echeance, statut) "
+              << "VALUES (" << facture.getEleveId() << ", "
+              << facture.getMontantTotal() << ", '"
+              << facture.getDateEmission() << "', '"
+              << facture.getDateEcheance() << "', '"
+              << facture.getStatut() << "')";
+        
+        return DatabaseConnection::getInstance()->executeQuery(query.str());
+    }
 
-Description : Interface principale permettant l'accès aux différentes fonctionnalités du système :
+    bool mettreAJourStatut(int factureId, const std::string& statut) {
+        std::stringstream query;
+        query << "UPDATE factures SET "
+              << "statut = '" << statut << "' "
+              << "WHERE id_facture = " << factureId;
+        
+        return DatabaseConnection::getInstance()->executeQuery(query.str());
+    }
 
-1. Gestion des utilisateurs
-2. Gestion des classes
-3. Gestion des matières
-4. Gestion des notes
-5. Gestion des absences
-6. Gestion du pointage
-7. Gestion des communications
-8. Gestion des enseignements
-9. Gestion des factures et paiements
-0. Quitter
+    std::vector<Facture> getFacturesEleve(int eleveId) {
+        std::vector<Facture> factures;
+        std::stringstream query;
+        query << "SELECT * FROM factures "
+              << "WHERE id_eleve = " << eleveId
+              << " ORDER BY date_emission DESC";
+        
+        if (DatabaseConnection::getInstance()->executeQuery(query.str())) {
+            MYSQL_RES* result = DatabaseConnection::getInstance()->getResult();
+            MYSQL_ROW row;
+            
+            while ((row = mysql_fetch_row(result))) {
+                Facture fact(std::stoi(row[1]), std::stof(row[2]));
+                fact.setDateEmission(row[3]);
+                fact.setDateEcheance(row[4]);
+                fact.setStatut(row[5]);
+                factures.push_back(fact);
+            }
+            mysql_free_result(result);
+        }
+        return factures;
+    }
+};
+```
 
-## Gestion des Utilisateurs
+### Gestion des paiements
 
-![GestionUtilisateurs](MenuGestionUtilisateurs.png)
+Implémentation de la classe `PaiementDAO` :
 
-Fonctionnalités :
+```cpp
+class PaiementDAO {
+public:
+    bool enregistrerPaiement(const Paiement& paiement) {
+        std::stringstream query;
+        query << "INSERT INTO paiements "
+              << "(id_facture, montant, date_paiement, methode_paiement) "
+              << "VALUES (" << paiement.getFactureId() << ", "
+              << paiement.getMontant() << ", '"
+              << paiement.getDatePaiement() << "', '"
+              << paiement.getMethodePaiement() << "')";
+        
+        bool success = DatabaseConnection::getInstance()->executeQuery(query.str());
+        
+        if (success) {
+            // Mise à jour du statut de la facture
+            float totalPaye = getTotalPaiements(paiement.getFactureId());
+            Facture facture = getFacture(paiement.getFactureId());
+            
+            if (totalPaye >= facture.getMontantTotal()) {
+                FactureDAO().mettreAJourStatut(paiement.getFactureId(), "payée");
+            }
+        }
+        
+        return success;
+    }
 
-- Création d'utilisateurs
-- Modification des informations
-- Activation/désactivation de comptes
-- Recherche et filtrage
-- Ajouter un utilisateur
-- Afficher tous les utilisateurs
-- Rechercher par type
-- Rechercher par nom
-- Activer/Désactiver un utilisateur
-- Statistiques
-- Vérifier les droits d'un utilisateur
-- Retour au menu principal
+    float getTotalPaiements(int factureId) {
+        std::stringstream query;
+        query << "SELECT SUM(montant) FROM paiements "
+              << "WHERE id_facture = " << factureId;
+        
+        if (DatabaseConnection::getInstance()->executeQuery(query.str())) {
+            MYSQL_RES* result = DatabaseConnection::getInstance()->getResult();
+            MYSQL_ROW row = mysql_fetch_row(result);
+            
+            if (row && row[0]) {
+                return std::stof(row[0]);
+            }
+            mysql_free_result(result);
+        }
+        return 0.0f;
+    }
 
-## Gestion des Classes
+    std::vector<Paiement> getPaiementsFacture(int factureId) {
+        std::vector<Paiement> paiements;
+        std::stringstream query;
+        query << "SELECT * FROM paiements "
+              << "WHERE id_facture = " << factureId
+              << " ORDER BY date_paiement DESC";
+        
+        if (DatabaseConnection::getInstance()->executeQuery(query.str())) {
+            MYSQL_RES* result = DatabaseConnection::getInstance()->getResult();
+            MYSQL_ROW row;
+            
+            while ((row = mysql_fetch_row(result))) {
+                Paiement p(std::stof(row[2]), row[4]);
+                p.setDatePaiement(row[3]);
+                paiements.push_back(p);
+            }
+            mysql_free_result(result);
+        }
+        return paiements;
+    }
+};
+```
 
-![GestionClasses](MenuGestionClasses.png)
+### Gestion des retenues
 
-Fonctionnalités :
-- Créer une classe
-- Afficher toutes les classes
-- Modifier une classe
-- Inscrire un élève
-- Désinscrire un élève
-- Liste des élèves d'une classe
-- Statistiques de classe
-- Retour au menu principal
+Implémentation de la classe `RetenueDAO` :
 
-## Gestion des Matières
+```cpp
+class RetenueDAO {
+public:
+    bool programmerRetenue(const Retenue& retenue) {
+        std::stringstream query;
+        query << "INSERT INTO retenues "
+              << "(id_eleve, date_retenue, heure_debut, heure_fin, "
+              << "motif, id_professeur, statut) "
+              << "VALUES (" << retenue.getEleveId() << ", '"
+              << retenue.getDateRetenue() << "', '"
+              << retenue.getHeureDebut() << "', '"
+              << retenue.getHeureFin() << "', '"
+              << retenue.getMotif() << "', "
+              << retenue.getProfesseurId() << ", "
+              << "'programmée')";
+        
+        return DatabaseConnection::getInstance()->executeQuery(query.str());
+    }
 
-![GestionMatieres](MenuGestionMatieres.png)
+    bool mettreAJourStatut(int retenueId, const std::string& statut) {
+        std::stringstream query;
+        query << "UPDATE retenues SET "
+              << "statut = '" << statut << "' "
+              << "WHERE id_retenue = " << retenueId;
+        
+        return DatabaseConnection::getInstance()->executeQuery(query.str());
+    }
 
-Fonctionnalités :
-- Ajouter une matière
-- Afficher toutes les matières
-- Modifier une matière
-- Supprimer une matière
-- Gestion des professeurs par matière
-- Voir les matières d'une classe
-- Gérer les coefficients
-- Retour au menu principal
+    std::vector<Retenue> getRetenuesEleve(int eleveId) {
+        std::vector<Retenue> retenues;
+        std::stringstream query;
+        query << "SELECT * FROM retenues "
+              << "WHERE id_eleve = " << eleveId
+              << " ORDER BY date_retenue DESC";
+        
+        if (DatabaseConnection::getInstance()->executeQuery(query.str())) {
+            MYSQL_RES* result = DatabaseConnection::getInstance()->getResult();
+            MYSQL_ROW row;
+            
+            while ((row = mysql_fetch_row(result))) {
+                Retenue ret(std::stoi(row[1]), row[2], row[3], row[4]);
+                ret.setMotif(row[5]);
+                ret.setStatut(row[7]);
+                retenues.push_back(ret);
+            }
+            mysql_free_result(result);
+        }
+        return retenues;
+    }
+};
+```
 
-## Gestion des Notes
+## Explications détaillées des composants principaux
 
-![GestionNotes](MenuGestionNotes.png)
+### 1. Système de Gestion des Absences
 
-Fonctionnalités :
-- Ajouter une note
-- Modifier une note
-- Consulter les notes d'un élève
-- Calculer la moyenne d'un élève
-- Calculer la moyenne de classe
-- Retour au menu principal
+Le système de gestion des absences est conçu pour :
+- Enregistrer les absences des élèves
+- Gérer les justifications
+- Générer des rapports statistiques
+- Notifier les parents
 
-## Gestion des Absences
+```cpp
+/* Structure de la table absences :
+ * - id_absence (PK)
+ * - id_eleve (FK)
+ * - date_debut
+ * - date_fin
+ * - justifie (boolean)
+ * - motif (text)
+ */
 
-Fonctionnalités :
-- Enregistrer une absence
-- Justifier une absence
-- Consulter les absences d'un élève
-- Rapport d'absences par classe
-- Statistiques d'absences
-- Retour au menu principal
+class AbsenceDAO {
+    /* Points clés de l'implémentation :
+     * 1. Validation des dates (date_fin >= date_debut)
+     * 2. Vérification des chevauchements d'absences
+     * 3. Système de notification automatique
+     * 4. Génération de statistiques
+     */
+}
+```
 
-## Gestion du Pointage
+### 2. Système de Gestion des Classes
 
-![GestionPointage](MenuGestionPointage.png)
+La gestion des classes comprend :
+- L'inscription des élèves
+- L'affectation des professeurs
+- Le suivi des effectifs
+- La gestion des emplois du temps
 
-Fonctionnalités :
-- Enregistrer une entrée
-- Enregistrer une sortie
-- Consulter les pointages du jour
-- Rapport de retards
-- Statistiques de présence
-- Retour au menu principal
+```cpp
+/* Structure de la table classes :
+ * - id_classe (PK)
+ * - nom_classe
+ * - niveau
+ * - annee_scolaire
+ * - professeur_principal (FK)
+ * 
+ * Table de liaison inscriptions :
+ * - id_inscription (PK)
+ * - id_classe (FK)
+ * - id_eleve (FK)
+ * - date_inscription
+ * - statut
+ */
 
-## Gestion des Communications
+class ClasseDAO {
+    /* Fonctionnalités principales :
+     * 1. Gestion des effectifs maximum
+     * 2. Vérification des prérequis niveau
+     * 3. Historisation des changements de classe
+     * 4. Calcul des moyennes de classe
+     */
+}
+```
 
-![GestionCommunications](MenuGestionCommunications.png)
+### 3. Système de Gestion des Matières
 
-Fonctionnalités :
-- Créer une communication
-- Consulter les communications reçues
-- Consulter les communications envoyées
-- Répondre à une communication
-- Archiver une communication
-- Retour au menu principal
+Le système gère :
+- Les matières enseignées
+- Les coefficients
+- Les volumes horaires
+- Les affectations des professeurs
 
-## Gestion des Enseignements
+```cpp
+/* Structure de la table matieres :
+ * - id_matiere (PK)
+ * - nom
+ * - description
+ * - coefficient
+ * - volume_horaire
+ *
+ * Table de liaison enseignements :
+ * - id_enseignement (PK)
+ * - id_matiere (FK)
+ * - id_professeur (FK)
+ * - id_classe (FK)
+ */
 
-![GestionEnseignements](MenuGestionEnseignements.png)
+class MatiereDAO {
+    /* Caractéristiques clés :
+     * 1. Gestion des contraintes horaires
+     * 2. Validation des affectations
+     * 3. Calcul des moyennes par matière
+     * 4. Suivi des progressions pédagogiques
+     */
+}
+```
 
-Fonctionnalités :
-- Affecter un professeur à une matière
-- Affecter une matière à une classe
-- Consulter l'emploi du temps
-- Modifier les affectations
-- Statistiques d'enseignement
-- Retour au menu principal
+### 4. Système de Facturation
 
-## Gestion des Factures et Paiements
+La gestion des factures comprend :
+- L'émission des factures
+- Le suivi des paiements
+- La gestion des échéances
+- Les relances automatiques
 
-![GestionFactures](MenuGestionFactures.png)
+```cpp
+/* Structure de la table factures :
+ * - id_facture (PK)
+ * - id_eleve (FK)
+ * - montant_total
+ * - date_emission
+ * - date_echeance
+ * - statut
+ *
+ * Table paiements :
+ * - id_paiement (PK)
+ * - id_facture (FK)
+ * - montant
+ * - date_paiement
+ * - methode_paiement
+ */
 
-Fonctionnalités :
+class FactureDAO {
+    /* Fonctionnalités essentielles :
+     * 1. Calcul automatique des montants
+     * 2. Gestion des échéanciers
+     * 3. Système de relance automatique
+     * 4. Génération de reçus
+     */
+}
+```
 
-- Émission des factures
-- Suivi des paiements
-- Gestion des échéances
-- Créer une facture
-- Afficher les factures d'un élève
-- Enregistrer un paiement
-- Afficher les factures impayées
-- Voir l'historique des paiements
-- Retour au menu principal
+### 5. Système de Communication
 
+Le système de communication permet :
+- L'envoi de messages entre utilisateurs
+- La notification des événements
+- Le suivi des communications
+- L'archivage des échanges
 
+```cpp
+/* Structure de la table communications :
+ * - id_communication (PK)
+ * - type
+ * - titre
+ * - contenu
+ * - date_envoi
+ * - expediteur_id (FK)
+ * - importance
+ *
+ * Table destinataires :
+ * - id_destinataire (PK)
+ * - communication_id (FK)
+ * - utilisateur_id (FK)
+ * - statut_lecture
+ */
 
+class CommunicationDAO {
+    /* Points clés :
+     * 1. Gestion des priorités des messages
+     * 2. Système de notification en temps réel
+     * 3. Archivage automatique
+     * 4. Traçabilité des communications
+     */
+}
+```
+
+### 6. Système de Retenues
+
+La gestion des retenues inclut :
+- La programmation des retenues
+- Le suivi des présences
+- La notification aux parents
+- La génération de rapports
+
+```cpp
+/* Structure de la table retenues :
+ * - id_retenue (PK)
+ * - id_eleve (FK)
+ * - date_retenue
+ * - heure_debut
+ * - heure_fin
+ * - motif
+ * - id_professeur (FK)
+ * - statut
+ */
+
+class RetenueDAO {
+    /* Fonctionnalités principales :
+     * 1. Vérification des disponibilités
+     * 2. Notification automatique
+     * 3. Suivi des présences
+     * 4. Génération de rapports disciplinaires
+     */
+}
+```
+
+## Implémentation technique
+
+### 1. Couche d'accès aux données
+
+La couche d'accès aux données est implémentée en utilisant le modèle DAO (Data Access Object). Chaque classe DAO est responsable de l'accès à une table spécifique de la base de données.
+
+```cpp
+/* Avantages de cette approche :
+ * 1. Séparation claire entre la logique métier et l'accès aux données
+ * 2. Encapsulation des requêtes SQL
+ * 3. Gestion centralisée des erreurs
+ * 4. Facilité de modification des requêtes
+ */
+```
+
+### 2. Gestion des utilisateurs
+
+La gestion des utilisateurs est assurée par la classe `UtilisateurDAO`. Elle permet d'ajouter de nouveaux utilisateurs et de récupérer la liste de tous les utilisateurs.
+
+```cpp
+/* Points clés de l'implémentation DAO :
+ * 1. Séparation claire entre la logique métier et l'accès aux données
+ * 2. Encapsulation des requêtes SQL
+ * 3. Gestion centralisée des erreurs
+ * 4. Facilité de modification des requêtes
+ */
+```
+
+### 3. Pointage des élèves
+
+Le pointage des élèves est géré par la classe `PointageDAO`. Elle permet d'enregistrer les arrivées des élèves et de récupérer les pointages du jour.
+
+```cpp
+/* Caractéristiques du système de pointage :
+ * 1. Gestion automatique des retards
+ * 2. Historisation des pointages
+ * 3. Possibilité de générer des rapports
+ * 4. Interface avec le système de notification
+ */
+```
+
+### 4. Gestion des notes
+
+La gestion des notes est assurée par la classe `NoteDAO`. Elle permet d'ajouter de nouvelles notes et de calculer les moyennes.
+
+```cpp
+/* Fonctionnalités du système de notes :
+ * 1. Gestion des coefficients
+ * 2. Calcul automatique des moyennes
+ * 3. Historisation des notes
+ * 4. Possibilité de générer des bulletins
+ */
+```
+
+### 5. Système de communication
+
+Le système de communication est implémenté par la classe `CommunicationDAO`. Il permet de créer de nouvelles communications et de récupérer les communications reçues par un utilisateur.
+
+```cpp
+/* Points clés :
+ * 1. Gestion des priorités des messages
+ * 2. Système de notification en temps réel
+ * 3. Archivage automatique
+ * 4. Traçabilité des communications
+ */
+```
+
+### 6. Gestion des absences
+
+La gestion des absences est assurée par la classe `AbsenceDAO`. Elle permet d'enregistrer de nouvelles absences, de justifier des absences et de récupérer les absences d'un élève.
+
+```cpp
+/* Points clés de l'implémentation :
+ * 1. Validation des dates (date_fin >= date_debut)
+ * 2. Vérification des chevauchements d'absences
+ * 3. Système de notification automatique
+ * 4. Génération de statistiques
+ */
+```
+
+### 7. Gestion des classes
+
+La gestion des classes est assurée par la classe `ClasseDAO`. Elle permet de créer de nouvelles classes, d'inscrire des élèves à une classe et de calculer les moyennes de classe.
+
+```cpp
+/* Fonctionnalités principales :
+ * 1. Gestion des effectifs maximum
+ * 2. Vérification des prérequis niveau
+ * 3. Historisation des changements de classe
+ * 4. Calcul des moyennes de classe
+ */
+```
+
+### 8. Gestion des matières
+
+La gestion des matières est assurée par la classe `MatiereDAO`. Elle permet d'ajouter de nouvelles matières, d'affecter des professeurs à des matières et de récupérer les matières d'une classe.
+
+```cpp
+/* Caractéristiques clés :
+ * 1. Gestion des contraintes horaires
+ * 2. Validation des affectations
+ * 3. Calcul des moyennes par matière
+ * 4. Suivi des progressions pédagogiques
+ */
+```
+
+### 9. Système de facturation
+
+Le système de facturation est implémenté par la classe `FactureDAO`. Il permet de créer de nouvelles factures, de mettre à jour le statut des factures et de récupérer les factures d'un élève.
+
+```cpp
+/* Fonctionnalités essentielles :
+ * 1. Calcul automatique des montants
+ * 2. Gestion des échéanciers
+ * 3. Système de relance automatique
+ * 4. Génération de reçus
+ */
+```
+
+### 10. Gestion des paiements
+
+La gestion des paiements est assurée par la classe `PaiementDAO`. Elle permet d'enregistrer de nouveaux paiements, de récupérer les paiements d'une facture et de calculer le total des paiements.
+
+```cpp
+/* Avantages de cette approche :
+ * 1. Suivi précis des paiements
+ * 2. Mise à jour automatique du statut des factures
+ * 3. Génération de reçus
+ * 4. Facilité de suivi des échéances
+ */
+```
+
+### 11. Gestion des retenues
+
+La gestion des retenues est assurée par la classe `RetenueDAO`. Elle permet de programmer de nouvelles retenues, de mettre à jour le statut des retenues et de récupérer les retenues d'un élève.
+
+```cpp
+/* Fonctionnalités principales :
+ * 1. Vérification des disponibilités
+ * 2. Notification automatique
+ * 3. Suivi des présences
+ * 4. Génération de rapports disciplinaires
+ */
+```
+
+### 12. Sécurité et authentification
+
+La sécurité et l'authentification sont assurées par la classe `Authentification`. Elle permet de vérifier les identifiants des utilisateurs et de gérer les sessions.
+
+```cpp
+/* Caractéristiques du système d'authentification :
+ * 1. Chiffrement des mots de passe
+ * 2. Gestion des sessions
+ * 3. Contrôle d'accès basé sur les rôles
+ * 4. Sécurité renforcée par des tokens
+ */
+```
+
+### 13. Interface utilisateur
+
+L'interface utilisateur est implémentée en utilisant la bibliothèque Qt. Elle permet aux utilisateurs d'interagir avec le système de manière intuitive et conviviale.
+
+```cpp
+/* Avantages de cette approche :
+ * 1. Interface graphique conviviale
+ * 2. Compatibilité multiplateforme
+ * 3. Personnalisation facile
+ * 4. Intégration avec les fonctionnalités natives
+ */
+```
+
+### 14. Tests et validation
+
+Le système est rigoureusement testé à chaque étape de développement. Les tests unitaires, d'intégration et d'acceptation sont effectués pour garantir la qualité et la fiabilité du système.
+
+```cpp
+/* Caractéristiques des tests :
+ * 1. Couverture complète des fonctionnalités
+ * 2. Tests automatisés pour une validation rapide
+ * 3. Simulation de scénarios réalistes
+ * 4. Intégration continue pour une livraison continue
+ */
+```
+
+### 15. Documentation et formation
+
+Une documentation complète est fournie aux utilisateurs, ainsi qu'une formation initiale et un support technique.
+
+```cpp
+/* Avantages de cette approche :
+ * 1. Adoption facilitée
+ * 2. Réduction des coûts de maintenance
+ * 3. Amélioration de la satisfaction des utilisateurs
+ * 4. Formation continue pour un apprentissage continu
+ */
+```
+
+### 16. Déploiement et maintenance
+
+Le système est déployé sur un serveur sécurisé et est régulièrement mis à jour pour garantir une expérience optimale.
+
+```cpp
+/* Caractéristiques du déploiement :
+ * 1. Hébergement sur un serveur sécurisé
+ * 2. Mises à jour régulières pour la sécurité et les performances
+ * 3. Sauvegardes automatiques pour la continuité des données
+ * 4. Monitoring pour une disponibilité maximale
+ */
+```
+
+### 17. Évolutivité et extensibilité
+
+Le système est conçu pour être évolutif et extensible. Il peut facilement être adapté aux besoins futurs de l'établissement.
+
+```cpp
+/* Avantages de cette approche :
+ * 1. Adaptabilité aux changements
+ * 2. Possibilité d'ajouter de nouvelles fonctionnalités
+ * 3. Intégration facile avec d'autres systèmes
+ * 4. Économies à long terme
+ */
+```
+
+### 18. Conformité et réglementation
+
+Le système est développé en conformité avec les réglementations en vigueur, notamment le RGPD (Règlement Général sur la Protection des Données).
+
+```cpp
+/* Caractéristiques de la conformité :
+ * 1. Respect des droits des utilisateurs
+ * 2. Sécurité des données
+ * 3. Transparence et contrôle des données
+ * 4. Responsabilité et conformité réglementaire
+ */
+```
+
+### 19. Performance et optimisation
+
+Le système est optimisé pour offrir une expérience utilisateur fluide et performante. Des techniques d'optimisation telles que la mise en cache et la pagination sont utilisées.
+
+```cpp
+/* Avantages de cette approche :
+ * 1. Réduction des temps de chargement
+ * 2. Amélioration de la réactivité
+ * 3. Économie des ressources serveur
+ * 4. Satisfaction des utilisateurs
+ */
+```
+
+### 20. Intégration avec d'autres systèmes
+
+Le système peut être intégré avec d'autres systèmes tels que les systèmes de gestion de contenu, les systèmes de messagerie et les systèmes de paiement en ligne.
+
+```cpp
+/* Avantages de cette approche :
+ * 1. Interopérabilité avec d'autres systèmes
+ * 2. Échange de données facilité
+ * 3. Réduction des doublons de données
+ * 4. Amélioration de l'efficacité opérationnelle
+ */
+```
+
+### 21. Sécurité des données
+
+La sécurité des données est une priorité absolue. Des mesures de sécurité telles que le chiffrement des données, la gestion des accès et les sauvegardes régulières sont mises en place.
+
+```cpp
+/* Caractéristiques de la sécurité des données :
+ * 1. Chiffrement des données
+ * 2. Gestion des accès
+ * 3. Sauvegardes régulières
+ * 4. Sécurité physique des serveurs
+ */
+```
