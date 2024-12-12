@@ -175,7 +175,7 @@ Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO 
 
   **Commentaire :** Ce DAO assure que les opérations sur les classes sont effectuées de manière cohérente et sécurisée.
 
-- **MatiereDAO** : Gère les opérations de base de données pour les matières, y compris l'ajout et la modification des matières.
+- **MatiereDAO** : Gère les opérations de base de données pour les mati��res, y compris l'ajout et la modification des matières.
 
   **Commentaire :** La gestion des matières via un DAO permet de maintenir une base de données propre et bien structurée.
 
@@ -738,44 +738,118 @@ public:
 
 ### Menu Principal
 
-*[Capture d'écran à insérer]*
+![MenuPrincipal](MenuPrincipal.png)
 
-Description : Interface principale permettant l'accès aux différentes fonctionnalités :
+Description : Interface principale permettant l'accès aux différentes fonctionnalités du système :
 
-- Gestion des utilisateurs
-- Gestion des classes
-- Gestion des matières
-- Gestion des notes
-- Système de pointage
+1. Gestion des utilisateurs
+2. Gestion des classes
+3. Gestion des matières
+4. Gestion des notes
+5. Gestion des absences
+6. Gestion du pointage
+7. Gestion des communications
+8. Gestion des enseignements
+9. Gestion des factures et paiements
+0. Quitter
 
-### Gestion des Utilisateurs
+### Gestion des Classes
 
-*[Capture d'écran à insérer]*
-
-Fonctionnalités :
-
-- Création d'utilisateurs
-- Modification des informations
-- Activation/désactivation de comptes
-- Recherche et filtrage
-
-### Système de Pointage
-
-*[Capture d'écran à insérer]*
+![GestionClasses](MenuGestionClasses.png)
 
 Fonctionnalités :
+- Créer une classe
+- Afficher toutes les classes
+- Modifier une classe
+- Inscrire un élève
+- Désinscrire un élève
+- Liste des élèves d'une classe
+- Statistiques de classe
+- Retour au menu principal
 
-- Enregistrement des entrées/sorties
-- Consultation des retards
-- Génération de rapports
+### Gestion des Matières
+
+![GestionMatieres](MenuGestionMatieres.png)
+
+Fonctionnalités :
+- Ajouter une matière
+- Afficher toutes les matières
+- Modifier une matière
+- Supprimer une matière
+- Gestion des professeurs par matière
+- Voir les matières d'une classe
+- Gérer les coefficients
+- Retour au menu principal
+
+### Gestion des Notes
+
+![GestionNotes](MenuGestionNotes.png)
+
+Fonctionnalités :
+- Ajouter une note
+- Modifier une note
+- Consulter les notes d'un élève
+- Calculer la moyenne d'un élève
+- Calculer la moyenne de classe
+- Retour au menu principal
+
+### Gestion des Absences
+
+Fonctionnalités :
+- Enregistrer une absence
+- Justifier une absence
+- Consulter les absences d'un élève
+- Rapport d'absences par classe
+- Statistiques d'absences
+- Retour au menu principal
+
+### Gestion du Pointage
+
+![GestionPointage](MenuGestionPointage.png)
+
+Fonctionnalités :
+- Enregistrer une entrée
+- Enregistrer une sortie
+- Consulter les pointages du jour
+- Rapport de retards
+- Statistiques de présence
+- Retour au menu principal
+
+### Gestion des Communications
+
+![GestionCommunications](MenuGestionCommunications.png)
+
+Fonctionnalités :
+- Créer une communication
+- Consulter les communications reçues
+- Consulter les communications envoyées
+- Répondre à une communication
+- Archiver une communication
+- Retour au menu principal
+
+### Gestion des Enseignements
+
+![GestionEnseignements](MenuGestionEnseignements.png)
+
+Fonctionnalités :
+- Affecter un professeur à une matière
+- Affecter une matière à une classe
+- Consulter l'emploi du temps
+- Modifier les affectations
+- Statistiques d'enseignement
+- Retour au menu principal
 
 ---
 
 ## Gestion des Utilisateurs et des Parents
 
+### Menu Principal
+
+![MenuPrincipal](MenuPrincipal.png)
+
 ### Gestion des Utilisateurs
 
-*[Capture d'écran à insérer]*
+![GestionUtilisateurs](MenuGestionUtilisateurs.png)
 
 Fonctionnalités :
 
@@ -783,41 +857,32 @@ Fonctionnalités :
 - Modification des informations
 - Activation/désactivation de comptes
 - Recherche et filtrage
+- Ajouter un utilisateur
+- Afficher tous les utilisateurs
+- Rechercher par type
+- Rechercher par nom
+- Activer/Désactiver un utilisateur
+- Statistiques
+- Vérifier les droits d'un utilisateur
+- Retour au menu principal
 
-### Gestion des Parents
 
-*[Capture d'écran à insérer]*
-
-Fonctionnalités :
-
-- Ajout de parents
-- Gestion des enfants
-- Suivi des absences
-- Communication avec les parents
 
 ## Gestion des Factures et Paiements
 
-### Gestion des Factures
-
-*[Capture d'écran à insérer]*
+![GestionFactures](MenuGestionFactures.png)
 
 Fonctionnalités :
 
 - Émission des factures
 - Suivi des paiements
 - Gestion des échéances
-
-### Gestion des Paiements
-
-*[Capture d'écran à insérer]*
-
-Fonctionnalités :
-
-- Traitement des paiements
-- Suivi des paiements
-- Gestion des méthodes de paiement
-
----
+- Créer une facture
+- Afficher les factures d'un élève
+- Enregistrer un paiement
+- Afficher les factures impayées
+- Voir l'historique des paiements
+- Retour au menu principal
 
 
 
