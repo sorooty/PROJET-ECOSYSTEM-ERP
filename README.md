@@ -175,7 +175,7 @@ Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO 
 
   **Commentaire :** Ce DAO assure que les opérations sur les classes sont effectuées de manière cohérente et sécurisée.
 
-- **MatiereDAO** : Gère les opérations de base de données pour les mati��res, y compris l'ajout et la modification des matières.
+- **MatiereDAO** : Gère les opérations de base de données pour les matières, y compris l'ajout et la modification des matières.
 
   **Commentaire :** La gestion des matières via un DAO permet de maintenir une base de données propre et bien structurée.
 
@@ -924,34 +924,24 @@ Le diagramme suivant illustre le processus d'attribution d'une note par un profe
 
 ```mermaid
 sequenceDiagram
+    actor Professeur
     participant Eleve
-    participant Professeur
     participant Note
     participant Classe
     participant UtilisateurDAO
     participant NoteDAO
 
-    Professeur->>Eleve: attribuerNote()
-    activate Eleve
-    Eleve->>Note: créer une nouvelle Note
-    activate Note
-    Note-->>Eleve: Note créée
-    deactivate Note
-    Eleve->>NoteDAO: ajouterNote()
-    activate NoteDAO
-    NoteDAO-->>Eleve: Note ajoutée
-    deactivate NoteDAO
-    Eleve-->>Professeur: Note attribuée
-    deactivate Eleve
+    Professeur->>+Eleve: attribuerNote()
+    Eleve->>+Note: créer une nouvelle Note
+    Note-->>-Eleve: Note créée
+    Eleve->>+NoteDAO: ajouterNote()
+    NoteDAO-->>-Eleve: Note ajoutée
+    Eleve-->>-Professeur: Note attribuée
 
-    Professeur->>Classe: calculerMoyenneClasse()
-    activate Classe
-    Classe->>NoteDAO: récupérerNotes()
-    activate NoteDAO
-    NoteDAO-->>Classe: liste des Notes
-    deactivate NoteDAO
-    Classe-->>Professeur: Moyenne calculée
-    deactivate Classe
+    Professeur->>+Classe: calculerMoyenneClasse()
+    Classe->>+NoteDAO: récupérerNotes()
+    NoteDAO-->>-Classe: liste des Notes
+    Classe-->>-Professeur: Moyenne calculée
 ```
 
 ### Description du processus
