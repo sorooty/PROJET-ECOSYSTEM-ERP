@@ -1,3 +1,39 @@
+// Vérification de l'authentification
+document.addEventListener('DOMContentLoaded', () => {
+    const userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+    
+    if (!userInfo) {
+        // Redirection vers la page de login si non authentifié
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Mise à jour des informations utilisateur dans l'interface
+    updateUserInterface(userInfo);
+    
+    // ... reste du code existant ...
+});
+
+function updateUserInterface(userInfo) {
+    // Mise à jour du header
+    const userNameElements = document.querySelectorAll('.user-name');
+    const userRoleElements = document.querySelectorAll('.user-role');
+    const userAvatar = document.querySelector('.user-avatar');
+    
+    userNameElements.forEach(el => el.textContent = userInfo.fullName);
+    userRoleElements.forEach(el => el.textContent = userInfo.role);
+    if (userAvatar) userAvatar.src = userInfo.avatar;
+
+    // Mise à jour des notifications
+    const notifBadge = document.querySelector('.notification-badge');
+    if (notifBadge) {
+        notifBadge.textContent = userInfo.notifications.length;
+    }
+
+    // Adaptation de l'interface selon le rôle
+    document.body.setAttribute('data-role', userInfo.role.toLowerCase());
+}
+
 // Données factices enrichies
 const MOCK_DATA = {
     EDT: {
@@ -629,3 +665,13 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('error', function(e) {
     console.error('Erreur JavaScript:', e.message);
 });
+
+function handleLogout(event) {
+    event.preventDefault();
+    
+    // Nettoyage des données de session
+    sessionStorage.clear();
+    
+    // Redirection vers la page de login
+    window.location.href = 'login.html';
+}

@@ -44,16 +44,69 @@ function showProfiles() {
 function handleLogin(event) {
     event.preventDefault();
     
+    // Récupération des valeurs du formulaire
+    const username = event.target.querySelector('input[type="text"]').value;
+    const password = event.target.querySelector('input[type="password"]').value;
+    
     // Simulation de connexion (pour la démo)
     const loadingButton = event.target.querySelector('button');
     loadingButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
     
+    // Simulation d'authentification
     setTimeout(() => {
-        // Redirection vers la page principale en fonction du profil
+        // Stockage des informations utilisateur en session
+        const userInfo = getUserInfoByProfile(currentProfile, username);
+        sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+        
+        // Redirection vers la page principale
         window.location.href = 'index.html';
     }, 1500);
     
     return false;
+}
+
+// Fonction pour générer les informations utilisateur selon le profil
+function getUserInfoByProfile(profile, username) {
+    const baseInfo = {
+        username: username,
+        avatar: 'avatar.png',
+        notifications: [
+            { id: 1, type: 'message', message: 'Bienvenue sur ECOLSYSTEM', date: new Date().toISOString() }
+        ]
+    };
+
+    switch(profile) {
+        case 'admin':
+            return {
+                ...baseInfo,
+                role: 'Administration',
+                fullName: 'M. ' + username,
+                permissions: ['all']
+            };
+        case 'teacher':
+            return {
+                ...baseInfo,
+                role: 'Enseignant',
+                fullName: 'Prof. ' + username,
+                matieres: ['Mathématiques', 'Physique']
+            };
+        case 'student':
+            return {
+                ...baseInfo,
+                role: 'Élève',
+                fullName: username,
+                classe: 'Terminale S2'
+            };
+        case 'parent':
+            return {
+                ...baseInfo,
+                role: 'Parent',
+                fullName: 'M/Mme ' + username,
+                enfants: ['Élève 1', 'Élève 2']
+            };
+        default:
+            return baseInfo;
+    }
 }
 
 // Animation du logo au chargement
