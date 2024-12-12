@@ -175,7 +175,7 @@ Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO 
 
   **Commentaire :** Ce DAO assure que les opérations sur les classes sont effectuées de manière cohérente et sécurisée.
 
-- **MatiereDAO** : Gère les opérations de base de données pour les matières, y compris l'ajout et la modification des matières.
+- **MatiereDAO** : Gère les opérations de base de données pour les mati��res, y compris l'ajout et la modification des matières.
 
   **Commentaire :** La gestion des matières via un DAO permet de maintenir une base de données propre et bien structurée.
 
@@ -1635,7 +1635,7 @@ Le système est développé en conformité avec les réglementations en vigueur,
 /* Caractéristiques de la conformité :
  * 1. Respect des droits des utilisateurs
  * 2. Sécurité des données
- * 3. Transparence et contrôle des données
+ * 3. Transparence et contrôle des donn��es
  * 4. Responsabilité et conformité réglementaire
  */
 ```
@@ -1678,3 +1678,161 @@ La sécurité des données est une priorité absolue. Des mesures de sécurité 
  * 4. Sécurité physique des serveurs
  */
 ```
+
+## Diagrammes de Séquence Complémentaires
+
+### 1. Gestion des Emplois du Temps
+
+```mermaid
+sequenceDiagram
+    actor Admin
+    participant EDT as EmploiDuTemps
+    participant Classe
+    participant Prof as Professeur
+    participant Salle
+    participant Notif as NotificationService
+
+    Admin->>EDT: créerCours()
+    activate EDT
+    EDT->>Classe: vérifierDisponibilité()
+    EDT->>Prof: vérifierDisponibilité()
+    EDT->>Salle: vérifierDisponibilité()
+    
+    alt Conflit détecté
+        EDT-->>Admin: signalerConflit()
+    else Pas de conflit
+        EDT->>EDT: enregistrerCours()
+        EDT->>Notif: notifierParticipants()
+        Notif->>Prof: envoyerNotification()
+        Notif->>Classe: envoyerNotification()
+        EDT-->>Admin: confirmationCréation()
+    end
+    deactivate EDT
+```
+
+### 2. Système d'Évaluation Continue
+
+```mermaid
+sequenceDiagram
+    actor Professeur
+    participant Eval as Evaluation
+    participant Classe
+    participant Note
+    participant Notif as NotificationService
+    participant Stats as StatistiquesService
+
+    Professeur->>Eval: planifierEvaluation()
+    activate Eval
+    Eval->>Classe: vérifierCalendrier()
+    
+    alt Date disponible
+        Eval->>Eval: enregistrerEvaluation()
+        Eval->>Notif: notifierEleves()
+        
+        loop Pour chaque élève
+            Professeur->>Note: saisirNote()
+            Note->>Stats: calculerStatistiques()
+            Stats-->>Professeur: afficherBilan()
+        end
+        
+    else Date occupée
+        Eval-->>Professeur: proposerAutresDates()
+    end
+    deactivate Eval
+```
+
+### 3. Suivi des Compétences
+
+```mermaid
+sequenceDiagram
+    actor Professeur
+    participant Comp as Competence
+    participant Eleve
+    participant Valid as ValidationService
+    participant Report as ReportingService
+
+    Professeur->>Comp: évaluerCompétence()
+    activate Comp
+    Comp->>Eleve: récupérerNiveau()
+    
+    alt Compétence acquise
+        Comp->>Valid: validerCompétence()
+        Valid->>Report: mettreAJourBilan()
+        Report-->>Professeur: afficherProgression()
+    else En cours d'acquisition
+        Comp->>Valid: enregistrerProgression()
+        Valid->>Report: générerRecommandations()
+        Report-->>Professeur: afficherRecommandations()
+    end
+    deactivate Comp
+```
+
+### 4. Gestion des Ressources
+
+```mermaid
+sequenceDiagram
+    actor Utilisateur
+    participant Res as Ressource
+    participant Cal as CalendrierService
+    participant Notif as NotificationService
+    participant Valid as ValidationService
+
+    Utilisateur->>Res: demanderRéservation()
+    activate Res
+    Res->>Cal: vérifierDisponibilité()
+    
+    alt Ressource disponible
+        Res->>Valid: validerDemande()
+        Valid->>Res: confirmerRéservation()
+        Res->>Notif: notifierConfirmation()
+        Notif-->>Utilisateur: envoyerConfirmation()
+    else Ressource indisponible
+        Cal->>Res: proposerAlternatives()
+        Res-->>Utilisateur: afficherAlternatives()
+    end
+    deactivate Res
+```
+
+### 5. Gestion des Événements Scolaires
+
+```mermaid
+sequenceDiagram
+    actor Organisateur
+    participant Evt as Evenement
+    participant Part as Participants
+    participant Res as Ressources
+    participant Notif as NotificationService
+
+    Organisateur->>Evt: créerEvenement()
+    activate Evt
+    Evt->>Res: réserverRessources()
+    
+    alt Ressources disponibles
+        Evt->>Part: inviterParticipants()
+        Part->>Notif: envoyerInvitations()
+        
+        loop Pour chaque réponse
+            Part->>Evt: enregistrerParticipation()
+        end
+        
+        Evt->>Notif: confirmerEvenement()
+        Notif-->>Organisateur: bilanInscriptions()
+    else Ressources indisponibles
+        Evt-->>Organisateur: proposerAutresDates()
+    end
+    deactivate Evt
+```
+
+Ces diagrammes illustrent :
+- Les interactions entre les différents acteurs et composants
+- La gestion des cas d'erreur et alternatives
+- Les flux de notifications
+- Les processus de validation
+- La synchronisation des différentes opérations
+
+Chaque diagramme met en évidence :
+1. Les acteurs principaux
+2. Les services impliqués
+3. Les points de décision
+4. Les boucles de traitement
+5. Les confirmations et notifications
