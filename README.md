@@ -686,6 +686,236 @@ classDiagram
     Facture "*" --> "1" Eleve
 ```
 
+### Diagramme de classes Global :
+```mermaid
+classDiagram
+    class Utilisateur {
+        -int id
+        -string nom
+        -string prenom
+        -string login
+        -string motDePasse
+        -string type
+        -bool actif
+        +Utilisateur(string nom, string prenom, string login)
+        +getId() int
+        +getNom() string
+        +getPrenom() string
+        +getLogin() string
+        +getType() string
+        +isActif() bool
+        +setNom(string nom) void
+        +setPrenom(string prenom) void
+        +setLogin(string login) void
+        +setType(string type) void
+        +setActif(bool actif) void
+        +verifierDroits(string action) bool
+        +estValide() bool
+    }
+
+    class Eleve {
+        -int idEleve
+        -int classeId
+        -list~Note~ notes
+        -list~Absence~ absences
+        -list~Retard~ retards
+        +Eleve(Utilisateur user)
+        +getClasseId() int
+        +getNotes() list~Note~
+        +getAbsences() list~Absence~
+        +getRetards() list~Retard~
+        +calculerMoyenne() float
+        +inscrireClasse(int classeId) bool
+        +ajouterNote(Note note) void
+        +ajouterAbsence(Absence absence) void
+        +ajouterRetard(Retard retard) void
+    }
+
+    class Professeur {
+        -int idProfesseur
+        -list~int~ matieres
+        -list~int~ classes
+        +Professeur(Utilisateur user)
+        +getMatieres() list~int~
+        +getClasses() list~int~
+        +ajouterMatiere(int matiereId) bool
+        +ajouterClasse(int classeId) bool
+        +attribuerNote(Eleve eleve, Note note) bool
+        +signalerAbsence(Eleve eleve) bool
+    }
+
+    class Admin {
+        -int idAdmin
+        +Admin(Utilisateur user)
+        +gererUtilisateurs() void
+        +gererSysteme() void
+        +creerUtilisateur(string type) bool
+        +modifierUtilisateur(int id) bool
+        +supprimerUtilisateur(int id) bool
+    }
+
+    class Parent {
+        -int idParent
+        -list~int~ enfantsIds
+        +Parent(Utilisateur user)
+        +getEnfants() list~Eleve~
+        +ajouterEnfant(int eleveId) bool
+        +voirNotesEnfant(int eleveId) list~Note~
+        +voirAbsencesEnfant(int eleveId) list~Absence~
+        +justifierAbsence(int absenceId) bool
+    }
+
+    class Classe {
+        -int id
+        -string nom
+        -string niveau
+        -int professeurPrincipalId
+        -list~int~ elevesIds
+        +Classe(string nom, string niveau)
+        +getId() int
+        +getNom() string
+        +getNiveau() string
+        +getEleves() list~Eleve~
+        +getProfesseurPrincipal() Professeur
+        +ajouterEleve(int eleveId) bool
+        +retirerEleve(int eleveId) bool
+        +calculerMoyenneClasse() float
+        +estValide() bool
+    }
+
+    class Note {
+        -int id
+        -int eleveId
+        -int matiereId
+        -int professeurId
+        -float valeur
+        -int coefficient
+        -string typeEvaluation
+        -date dateEvaluation
+        -string commentaire
+        +Note(float valeur, int coefficient)
+        +getValeur() float
+        +getCoefficient() int
+        +getTypeEvaluation() string
+        +getDateEvaluation() date
+        +getCommentaire() string
+        +setValeur(float valeur) void
+        +setCoefficient(int coefficient) void
+        +estValide() bool
+    }
+
+    class Matiere {
+        -int id
+        -string nom
+        -string description
+        -int coefficient
+        -int volumeHoraire
+        +Matiere(string nom)
+        +getId() int
+        +getNom() string
+        +getDescription() string
+        +getCoefficient() int
+        +getVolumeHoraire() int
+        +setNom(string nom) void
+        +setDescription(string description) void
+        +setCoefficient(int coefficient) void
+        +estValide() bool
+    }
+
+    class Pointage {
+        -int id
+        -int eleveId
+        -date datePointage
+        -time heureArrivee
+        -time heureDepart
+        -string statut
+        -string commentaire
+        -int validateurId
+        +Pointage(int eleveId)
+        +getId() int
+        +getDatePointage() date
+        +getHeureArrivee() time
+        +getHeureDepart() time
+        +getStatut() string
+        +enregistrerArrivee(time heure) bool
+        +enregistrerDepart(time heure) bool
+        +estRetard() bool
+        +estValide() bool
+    }
+
+    class Communication {
+        -int id
+        -string type
+        -string titre
+        -string contenu
+        -date dateEnvoi
+        -int expediteurId
+        -string importance
+        -string pieceJointe
+        -list~int~ destinatairesIds
+        +Communication(string titre, string contenu)
+        +getId() int
+        +getTitre() string
+        +getContenu() string
+        +getDateEnvoi() date
+        +getExpediteur() Utilisateur
+        +getDestinataires() list~Utilisateur~
+        +ajouterDestinataire(int userId) bool
+        +retirerDestinataire(int userId) bool
+        +estValide() bool
+    }
+
+    class Facture {
+        -int id
+        -int eleveId
+        -float montantTotal
+        -date dateEmission
+        -date dateEcheance
+        -string statut
+        -list~Paiement~ paiements
+        +Facture(int eleveId, float montant)
+        +getId() int
+        +getMontantTotal() float
+        +getMontantRestant() float
+        +getDateEmission() date
+        +getDateEcheance() date
+        +getStatut() string
+        +getPaiements() list~Paiement~
+        +ajouterPaiement(Paiement paiement) bool
+        +estPayee() bool
+        +estValide() bool
+    }
+
+    class Paiement {
+        -int id
+        -int factureId
+        -float montant
+        -date datePaiement
+        -string methodePaiement
+        +Paiement(float montant, string methode)
+        +getId() int
+        +getMontant() float
+        +getDatePaiement() date
+        +getMethodePaiement() string
+        +estValide() bool
+    }
+
+    Utilisateur <|-- Eleve
+    Utilisateur <|-- Professeur
+    Utilisateur <|-- Admin
+    Utilisateur <|-- Parent
+    Classe "1" --> "*" Eleve
+    Classe "1" --> "1" Professeur
+    Eleve "*" --> "*" Note
+    Eleve "1" --> "*" Pointage
+    Professeur "*" --> "*" Matiere
+    Parent "*" --> "*" Eleve
+    Facture "*" --> "1" Eleve
+    Facture "1" --> "*" Paiement
+    Communication "*" --> "1" Utilisateur
+```
+
+
 ## Implémentation
 
 ### Connexion à la base de données
