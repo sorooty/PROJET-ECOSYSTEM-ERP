@@ -918,21 +918,34 @@ CREATE TABLE factures (
 
 ```mermaid
 graph LR
+    %% Relations principales avec les classes
     classes -- "1,N" --- inscriptions
     inscriptions -- "N,1" --- utilisateurs
     classes -- "1,N" --- enseignements
+    
+    %% Relations avec les matières et enseignements
     enseignements -- "N,1" --- matieres
     enseignements -- "N,1" --- utilisateurs
+    notes -- "N,1" --- matieres
+    
+    %% Relations avec la vie scolaire
     notes -- "N,1" --- utilisateurs:::eleves
     notes -- "N,1" --- utilisateurs:::professeurs
-    notes -- "N,1" --- matieres
     absences -- "N,1" --- utilisateurs
     retenues -- "N,1" --- utilisateurs:::eleves
     retenues -- "N,1" --- utilisateurs:::professeurs
-    reunions -- "N,1" --- utilisateurs:::organisateurs
     retards -- "N,1" --- utilisateurs:::eleves
     retards -- "N,1" --- utilisateurs:::validateurs
+    
+    %% Relations avec les réunions
+    reunions -- "N,1" --- utilisateurs:::organisateurs
+    
+    %% Relations avec la partie financière
+    paiements -- "N,1" --- utilisateurs:::eleves
+    paiements -- "N,1" --- utilisateurs:::validateurs
+    factures -- "N,1" --- utilisateurs:::eleves
 
+    %% Styles des différents types d'utilisateurs
     classDef eleves fill:#f9f,stroke:#333,stroke-width:2px;
     classDef professeurs fill:#ccf,stroke:#333,stroke-width:2px;
     classDef organisateurs fill:#cff,stroke:#333,stroke-width:2px;
