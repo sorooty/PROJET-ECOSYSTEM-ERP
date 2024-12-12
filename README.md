@@ -753,10 +753,6 @@ Description : Interface principale permettant l'accès aux différentes fonction
 9. Gestion des factures et paiements
 0. Quitter
 
-### Gestion des Utilisateurs et des Parents
-
-![MenuPrincipal](MenuPrincipal.png)
-
 ### Gestion des Utilisateurs
 
 ![GestionUtilisateurs](MenuGestionUtilisateurs.png)
