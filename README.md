@@ -175,7 +175,7 @@ Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO 
 
   **Commentaire :** Ce DAO assure que les opérations sur les classes sont effectuées de manière cohérente et sécurisée.
 
-- **MatiereDAO** : Gère les opérations de base de données pour les mati��res, y compris l'ajout et la modification des matières.
+- **MatiereDAO** : Gère les opérations de base de données pour les matières, y compris l'ajout et la modification des matières.
 
   **Commentaire :** La gestion des matières via un DAO permet de maintenir une base de données propre et bien structurée.
 
@@ -753,6 +753,29 @@ Description : Interface principale permettant l'accès aux différentes fonction
 9. Gestion des factures et paiements
 0. Quitter
 
+### Gestion des Utilisateurs et des Parents
+
+![MenuPrincipal](MenuPrincipal.png)
+
+### Gestion des Utilisateurs
+
+![GestionUtilisateurs](MenuGestionUtilisateurs.png)
+
+Fonctionnalités :
+
+- Création d'utilisateurs
+- Modification des informations
+- Activation/désactivation de comptes
+- Recherche et filtrage
+- Ajouter un utilisateur
+- Afficher tous les utilisateurs
+- Rechercher par type
+- Rechercher par nom
+- Activer/Désactiver un utilisateur
+- Statistiques
+- Vérifier les droits d'un utilisateur
+- Retour au menu principal
+
 ### Gestion des Classes
 
 ![GestionClasses](MenuGestionClasses.png)
@@ -838,35 +861,6 @@ Fonctionnalités :
 - Modifier les affectations
 - Statistiques d'enseignement
 - Retour au menu principal
-
----
-
-## Gestion des Utilisateurs et des Parents
-
-### Menu Principal
-
-![MenuPrincipal](MenuPrincipal.png)
-
-### Gestion des Utilisateurs
-
-![GestionUtilisateurs](MenuGestionUtilisateurs.png)
-
-Fonctionnalités :
-
-- Création d'utilisateurs
-- Modification des informations
-- Activation/désactivation de comptes
-- Recherche et filtrage
-- Ajouter un utilisateur
-- Afficher tous les utilisateurs
-- Rechercher par type
-- Rechercher par nom
-- Activer/Désactiver un utilisateur
-- Statistiques
-- Vérifier les droits d'un utilisateur
-- Retour au menu principal
-
-
 
 ## Gestion des Factures et Paiements
 
