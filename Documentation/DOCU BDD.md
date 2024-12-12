@@ -139,7 +139,7 @@ La base de données est structurée autour de **14 tables principales**, organis
 
 ### Schéma relationnel (Version Complète)
 
-![WhatsApp Image 2024-12-02 at 23.26.01.jpeg](https://prod-files-secure.s3.us-west-2.amazonaws.com/ae2af0ff-bd6d-48e7-afc0-882c822e59a5/a0f3068f-56ba-4028-93bf-75462777eb66/WhatsApp_Image_2024-12-02_at_23.26.01.jpeg)
+![MLD LARGGGE](MLD%20LARGGGE.jpg)
 
 ## Un “petit” soucis de “TAILLE” 📊
 
@@ -562,7 +562,7 @@ CREATE TABLE pointage (
 
 Voici la version **réadaptée, schématisée, optimisée et structurée** de la base de notre ERP. 
 
-![MLD BASE FINAL.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/ae2af0ff-bd6d-48e7-afc0-882c822e59a5/38a6a110-488d-474a-bd6c-17c1f6b25835/MLD_BASE_FINAL.jpg)
+![MLD BASE FINAL.jpg](MLD%20BASE%20FINAL.jpg)
 
 Beaucoup Mieux, n’est-ce pas 😏? 
 
