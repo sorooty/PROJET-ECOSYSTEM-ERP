@@ -175,7 +175,7 @@ Les DAO sont responsables de l'interaction avec la base de données. Chaque DAO 
 
   **Commentaire :** Ce DAO assure que les opérations sur les classes sont effectuées de manière cohérente et sécurisée.
 
-- **MatiereDAO** : Gère les opérations de base de données pour les matières, y compris l'ajout et la modification des matières.
+- **MatiereDAO** : Gère les opérations de base de données pour les mati��res, y compris l'ajout et la modification des matières.
 
   **Commentaire :** La gestion des matières via un DAO permet de maintenir une base de données propre et bien structurée.
 
@@ -1103,6 +1103,74 @@ Fonctionnalités :
 - Afficher les factures impayées
 - Voir l'historique des paiements
 - Retour au menu principal
+
+## Diagrammes de Séquence
+
+### Attribution d'une note et calcul de moyenne
+
+Le diagramme suivant illustre le processus d'attribution d'une note par un professeur et le calcul de la moyenne de classe qui en découle :
+
+```mermaid
+sequenceDiagram
+    participant Eleve
+    participant Professeur
+    participant Note
+    participant Classe
+    participant UtilisateurDAO
+    participant NoteDAO
+
+    Professeur->>Eleve: attribuerNote()
+    activate Eleve
+    Eleve->>Note: créer une nouvelle Note
+    activate Note
+    Note-->>Eleve: Note créée
+    deactivate Note
+    Eleve->>NoteDAO: ajouterNote()
+    activate NoteDAO
+    NoteDAO-->>Eleve: Note ajoutée
+    deactivate NoteDAO
+    Eleve-->>Professeur: Note attribuée
+    deactivate Eleve
+
+    Professeur->>Classe: calculerMoyenneClasse()
+    activate Classe
+    Classe->>NoteDAO: récupérerNotes()
+    activate NoteDAO
+    NoteDAO-->>Classe: liste des Notes
+    deactivate NoteDAO
+    Classe-->>Professeur: Moyenne calculée
+    deactivate Classe
+```
+
+### Description du processus
+
+1. **Attribution de la note**
+   - Le professeur initie le processus en appelant `attribuerNote()` sur l'élève concerné
+   - L'élève crée une nouvelle instance de Note avec les informations fournies
+   - La note est ensuite persistée en base de données via NoteDAO
+   - Une confirmation est retournée au professeur
+
+2. **Calcul de la moyenne**
+   - Le professeur demande le calcul de la moyenne à la classe
+   - La classe récupère toutes les notes via NoteDAO
+   - La moyenne est calculée et retournée au professeur
+
+### Avantages de cette approche
+
+- **Séparation des responsabilités** : Chaque objet a un rôle bien défini
+- **Traçabilité** : Le flux d'information est clair et documenté
+- **Maintenance** : Les modifications peuvent être apportées de manière ciblée
+- **Scalabilité** : Le système peut être étendu facilement
+
+### Autres scénarios de séquence importants
+
+D'autres diagrammes de séquence pourraient être créés pour illustrer :
+- Le processus de pointage des élèves
+- La gestion des absences et retards
+- La communication entre parents et professeurs
+- Le processus de facturation et paiement
+
+Ces diagrammes suivraient la même logique de séparation des responsabilités et de clarté dans les interactions entre objets.
 
 
 
